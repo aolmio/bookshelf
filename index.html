@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Library Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2 family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container { position: relative; height: 260px; width: 100%; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="h-full flex flex-col bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+
+    <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-40 dark:bg-slate-900 border-b dark:border-slate-800">
+        <div class="max-w-[1600px] mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-emerald-500 rounded-2xl shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="library-big" class="w-8 h-8 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight">Family Library <span class="text-emerald-400">Pro</span></h1>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Management & Analytics</p>
+                </div>
+            </div>
+            <div class="flex items-center flex-wrap gap-3 w-full md:w-auto justify-end">
+                <button onclick="toggleDarkMode()" class="p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-700 transition" title="Toggle Theme">
+                    <i id="themeIcon" data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                </button>
+                <button onclick="openImportModal()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl border border-slate-700 transition font-semibold text-sm">
+                    <i data-lucide="file-up" class="w-4 h-4"></i> Import
+                </button>
+                <button onclick="exportCSV()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl border border-slate-700 transition font-semibold text-sm">
+                    <i data-lucide="file-down" class="w-4 h-4"></i> Export
+                </button>
+                <button onclick="confirmReset()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white px-4 py-2.5 rounded-xl border border-rose-500/20 transition font-semibold text-sm">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i> Reset
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-6 space-y-6">
+        
+        <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="p-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg"><i data-lucide="book" class="w-5 h-5"></i></span>
+                    <span id="stat-books-delta" class="text-[10px] font-bold text-emerald-500">+100%</span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Total Library Size</p>
+                <h3 id="stat-total-books" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="p-2 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg"><i data-lucide="user-check" class="w-5 h-5"></i></span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Active Authors</p>
+                <h3 id="stat-total-authors" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="p-2 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-lg"><i data-lucide="check-circle-2" class="w-5 h-5"></i></span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Read Progress</p>
+                <h3 id="stat-read-percent" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0%</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="p-2 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg"><i data-lucide="calendar" class="w-5 h-5"></i></span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Newest Release</p>
+                <h3 id="stat-latest-year" class="text-3xl font-black text-slate-900 dark:text-white mt-1">2024</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="p-2 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg"><i data-lucide="bookmark" class="w-5 h-5"></i></span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">On Wishlist</p>
+                <h3 id="stat-to-read" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                    <i data-lucide="target" class="w-4 h-4 text-emerald-500"></i> Reading Status Progress
+                </h4>
+                <div class="chart-container"><canvas id="statusChart"></canvas></div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-blue-500"></i> Publication Timeline
+                </h4>
+                <div class="chart-container"><canvas id="timelineChart"></canvas></div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
+                    <i data-lucide="award" class="w-4 h-4 text-amber-500"></i> Top 5 Authors
+                </h4>
+                <div class="chart-container"><canvas id="authorChart"></canvas></div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <aside class="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col h-[750px]">
+                <div class="mb-4">
+                    <h3 class="font-black text-slate-900 dark:text-white flex items-center gap-2 text-base">
+                        <i data-lucide="users" class="w-5 h-5 text-emerald-500"></i> Authors Directory
+                    </h3>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select an author to view their books</p>
+                </div>
+                <div class="relative mb-4">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Search authors..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white">
+                </div>
+                <div class="flex-1 overflow-y-auto custom-scrollbar pr-1" id="authorListContainer"></div>
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-2">
+                    <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+                        <i data-lucide="x-circle" class="w-4 h-4"></i> Show All Authors
+                    </button>
+                </div>
+            </aside>
+
+            <section class="lg:col-span-9 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col min-h-[750px]">
+                <div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 flex flex-col gap-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">Catalog Database</h2>
+                            <p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Total Filtered: <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400">0 / 0</span> books</p>
+                        </div>
+                        <button onclick="openAddBookModal()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-2xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i> Add Book
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                        <div class="relative md:col-span-6">
+                            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search Title, Author, Year, Ref..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 dark:text-white transition text-sm font-medium">
+                        </div>
+                        <div class="md:col-span-3">
+                            <select id="genreFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 text-sm font-medium">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-3">
+                            <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 text-sm font-medium">
+                                <option value="">Any Status</option>
+                                <option value="To Read">To Read</option>
+                                <option value="Reading">Reading</option>
+                                <option value="Finished">Finished</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto min-h-[450px] flex-1">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] bg-slate-50/50 dark:bg-slate-900/40 border-b border-slate-100 dark:border-slate-800">
+                                <th class="py-5 px-6">ID</th>
+                                <th class="py-5 px-6">Book Title (မြန်မာအမည်)</th>
+                                <th class="py-5 px-6">Author (စာရေးဆရာ)</th>
+                                <th class="py-5 px-6">Category</th>
+                                <th class="py-5 px-6">Year</th>
+                                <th class="py-5 px-6">Shelf</th>
+                                <th class="py-5 px-6">Status</th>
+                                <th class="py-5 px-6">Original Ref</th>
+                                <th class="py-5 px-6 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300"></tbody>
+                    </table>
+                    <div id="emptyState" class="hidden py-24 flex flex-col items-center justify-center text-center">
+                        <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-full mb-4 text-slate-300 dark:text-slate-600"><i data-lucide="book-open-x" class="w-12 h-12"></i></div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">No books found</h3>
+                        <p class="text-sm text-slate-400 dark:text-slate-500">Try adjusting your filters or import your CSV catalog.</p>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs font-bold text-slate-400 dark:text-slate-500" id="paginationInfo">Showing 0 to 0 of 0</div>
+                    <div class="flex items-center gap-2" id="paginationControls"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="bookModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 border dark:border-slate-800">
+            <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                <h3 id="modalTitle" class="text-xl font-black text-slate-900 dark:text-white">Add Book Record</h3>
+                <button onclick="closeModal('bookModal')" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+            </div>
+            <form id="bookForm" onsubmit="handleFormSubmit(event)" class="p-8 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="editIndex">
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="col-span-1">
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Book ID</label>
+                        <input type="text" id="m_id" required placeholder="#001" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold">
+                    </div>
+                    <div class="col-span-3">
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Title (မြန်မာအမည်)</label>
+                        <input type="text" id="m_title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Author (စာရေးဆရာ)</label>
+                        <input type="text" id="m_author" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Category</label>
+                        <input type="text" id="m_genre" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Year</label>
+                        <input type="text" id="m_year" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Shelf</label>
+                        <input type="text" id="m_shelf" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Status</label>
+                        <select id="m_status" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold">
+                            <option value="To Read">To Read</option>
+                            <option value="Reading">Reading</option>
+                            <option value="Finished">Finished</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Original Reference / Title</label>
+                    <input type="text" id="m_ref" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-medium text-slate-500">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Notes & Description</label>
+                    <textarea id="m_notes" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm"></textarea>
+                </div>
+                <div class="pt-6 flex justify-end gap-3">
+                    <button type="button" onclick="closeModal('bookModal')" class="px-6 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition">Cancel</button>
+                    <button type="submit" class="px-10 py-3 rounded-2xl bg-emerald-600 text-white font-black shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition">Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="importModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 border dark:border-slate-800">
+            <div class="px-8 py-6 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white">Import Catalog Data</h3>
+                <button onclick="closeModal('importModal')" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-950/50 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all cursor-pointer relative" onclick="triggerFileInput()">
+                    <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVFileSelect(event)" class="hidden">
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="p-4 bg-white dark:bg-slate-900 rounded-full shadow-md mb-3 text-slate-400 dark:text-slate-500">
+                            <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">Choose CSV File</h4>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select a formatted .csv file from your computer</p>
+                    </div>
+                </div>
+                <div class="relative flex items-center justify-center">
+                    <span class="absolute px-3 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Or Paste Raw CSV</span>
+                    <hr class="w-full border-slate-100 dark:border-slate-800">
+                </div>
+                <textarea id="csvInput" rows="5" placeholder="Paste CSV text here... (Headers must include: ID, Title, Author, Genre, Year, Shelf, Ref, Status)" class="w-full p-4 bg-slate-50 dark:bg-slate-950 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-xs"></textarea>
+                <div class="flex justify-end gap-3">
+                    <button onclick="closeModal('importModal')" class="px-6 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800">Close</button>
+                    <button onclick="processCSV()" class="px-10 py-3 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white dark:text-slate-200 font-black hover:bg-slate-800 dark:hover:bg-slate-700 transition">Execute Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-sm w-full overflow-hidden p-8 text-center space-y-6 animate-in fade-in zoom-in-95 duration-200 border dark:border-slate-800">
+            <div class="mx-auto w-16 h-16 bg-rose-50 dark:bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 id="confirmTitle" class="text-xl font-black text-slate-900 dark:text-white">အတည်ပြုပါ</h3>
+                <p id="confirmMessage" class="text-sm text-slate-500 dark:text-slate-400 font-medium"></p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('confirmModal')" class="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition">မလုပ်တော့ပါ</button>
+                <button id="confirmYesBtn" class="flex-1 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black transition shadow-lg shadow-rose-600/20">သေချာသည်</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let books = [];
+        let filteredBooks = [];
+        let currentPage = 1;
+        const rowsPerPage = 12;
+        let mainCharts = {};
+        let activeAuthorFilter = "";
+
+        window.onload = () => {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            updateThemeIcon();
+
+            const saved = localStorage.getItem('library_db_v2');
+            if (saved) {
+                books = JSON.parse(saved);
+            } else {
+                books = [
+                    { id: "#001", title: "ပီကင်း", author: "မောင်ထွန်းသူ", genre: "ဘာသာပြန် / ဝတ္ထုရှည်", year: "2008", shelf: "SW- Top Row", notes: "First edition", ref: "Peking By Anthony Grey", status: "Finished" },
+                    { id: "#002", title: "တတိယ အလင်းရောင်", author: "လင်္ကာရည်ကျော်", genre: "ဝတ္ထုတို စု", year: "2016", shelf: "SW- Top Row", notes: "First edition", ref: "", status: "Reading" }
+                ];
+                localStorage.setItem('library_db_v2', JSON.stringify(books));
+            }
+            lucide.createIcons();
+            initFilters();
+            handleSearch();
+        };
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateThemeIcon();
+            updateCharts();
+        }
+
+        function updateThemeIcon() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const icon = document.getElementById('themeIcon');
+            if (isDark) {
+                icon.setAttribute('data-lucide', 'sun');
+                icon.className = 'w-5 h-5 text-amber-400';
+            } else {
+                icon.setAttribute('data-lucide', 'moon');
+                icon.className = 'w-5 h-5 text-slate-300';
+            }
+            lucide.createIcons();
+        }
+
+        function initFilters() {
+            const genres = [...new Set(books.map(b => b.genre).filter(Boolean))].sort();
+            const gFilter = document.getElementById('genreFilter');
+            gFilter.innerHTML = '<option value="">All Categories</option>' + 
+                genres.map(g => `<option value="${g}">${g}</option>`).join('');
+            renderAuthorDirectory();
+        }
+
+        function renderAuthorDirectory() {
+            const authorCounts = {};
+            books.forEach(b => {
+                if (b.author) {
+                    authorCounts[b.author] = (authorCounts[b.author] || 0) + 1;
+                }
+            });
+
+            const sortedAuthors = Object.entries(authorCounts).sort((a, b) => a[0].localeCompare(b[0]));
+            const container = document.getElementById('authorListContainer');
+            container.innerHTML = "";
+
+            if (sortedAuthors.length === 0) {
+                container.innerHTML = `<div class="text-xs text-slate-400 text-center py-4">No authors found</div>`;
+                return;
+            }
+
+            sortedAuthors.forEach(([author, count]) => {
+                const activeClass = activeAuthorFilter === author ? 
+                    "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-100 dark:border-emerald-900/50" : 
+                    "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-transparent";
+
+                const row = document.createElement('button');
+                row.className = `w-full text-left px-3 py-2 rounded-xl text-xs flex justify-between items-center transition ${activeClass} mb-1`;
+                row.onclick = () => filterByAuthor(author);
+                row.innerHTML = `
+                    <span class="truncate pr-2">${author}</span>
+                    <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md font-bold text-[10px] min-w-[20px] text-center">${count}</span>
+                `;
+                container.appendChild(row);
+            });
+
+            const clearBtn = document.getElementById('clearAuthorFilterBtn');
+            if (activeAuthorFilter) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        }
+
+        function filterAuthorList() {
+            const query = document.getElementById('authorSearchInput').value.toLowerCase();
+            const buttons = document.getElementById('authorListContainer').querySelectorAll('button');
+            buttons.forEach(btn => {
+                const name = btn.querySelector('span').textContent.toLowerCase();
+                if (name.includes(query)) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
+        }
+
+        function filterByAuthor(author) {
+            if (activeAuthorFilter === author) {
+                activeAuthorFilter = "";
+            } else {
+                activeAuthorFilter = author;
+            }
+            renderAuthorDirectory();
+            handleSearch();
+        }
+
+        function clearAuthorFilter() {
+            activeAuthorFilter = "";
+            renderAuthorDirectory();
+            handleSearch();
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const genre = document.getElementById('genreFilter').value;
+            const status = document.getElementById('statusFilter').value;
+
+            filteredBooks = books.filter(b => {
+                const matchQuery = !query || 
+                    b.title.toLowerCase().includes(query) || 
+                    b.author.toLowerCase().includes(query) || 
+                    b.ref.toLowerCase().includes(query) ||
+                    b.id.toLowerCase().includes(query) ||
+                    b.year.toString().includes(query);
+                
+                const matchGenre = !genre || b.genre === genre;
+                const matchStatus = !status || b.status === status;
+                const matchAuthorSelect = !activeAuthorFilter || b.author === activeAuthorFilter;
+
+                return matchQuery && matchGenre && matchStatus && matchAuthorSelect;
+            });
+
+            currentPage = 1;
+            document.getElementById('rowCounter').textContent = `${filteredBooks.length} / ${books.length}`;
+            updateDashboard();
+            renderTable();
+        }
+
+        function renderTable() {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedItems = filteredBooks.slice(start, end);
+            const tbody = document.getElementById('tableBody');
+            
+            tbody.innerHTML = '';
+            
+            if (paginatedItems.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
+            } else {
+                document.getElementById('emptyState').classList.add('hidden');
+                paginatedItems.forEach(b => {
+                    const statusClass = b.status === 'Finished' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 
+                                      b.status === 'Reading' ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800 last:border-0";
+                    tr.innerHTML = `
+                        <td class="py-5 px-6 font-mono text-[11px] font-bold text-slate-400 dark:text-slate-500">${b.id}</td>
+                        <td class="py-5 px-6 font-bold text-slate-900 dark:text-white">${b.title}</td>
+                        <td class="py-5 px-6 text-sm font-medium text-slate-600 dark:text-slate-300">${b.author}</td>
+                        <td class="py-5 px-6"><span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">${b.genre}</span></td>
+                        <td class="py-5 px-6 font-mono text-xs text-slate-400 dark:text-slate-500">${b.year || '-'}</td>
+                        <td class="py-5 px-6 text-xs font-bold text-emerald-600 dark:text-emerald-400">${b.shelf}</td>
+                        <td class="py-5 px-6"><span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${statusClass}">${b.status}</span></td>
+                        <td class="py-5 px-6 italic text-xs text-slate-400 dark:text-slate-500 max-w-[150px] truncate">${b.ref || '-'}</td>
+                        <td class="py-5 px-6 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <button onclick="openEditModal('${b.id}')" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-800 shadow-sm transition" title="Edit Book"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                <button onclick="deleteBook('${b.id}')" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 rounded-xl hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-800 shadow-sm transition" title="Delete Book"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                lucide.createIcons();
+            }
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredBooks.length / rowsPerPage);
+            const container = document.getElementById('paginationControls');
+            const info = document.getElementById('paginationInfo');
+            
+            container.innerHTML = '';
+            info.textContent = `Showing ${Math.min(filteredBooks.length, (currentPage-1)*rowsPerPage + 1)} to ${Math.min(filteredBooks.length, currentPage*rowsPerPage)} of ${filteredBooks.length}`;
+
+            if (totalPages <= 1) return;
+
+            const btnClass = "w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition ";
+            
+            for(let i=1; i<=totalPages; i++) {
+                if(i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    const btn = document.createElement('button');
+                    btn.className = btnClass + (i === currentPage ? "bg-emerald-600 text-white shadow-lg" : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-emerald-500 dark:hover:border-emerald-400");
+                    btn.textContent = i;
+                    btn.onclick = () => { currentPage = i; renderTable(); };
+                    container.appendChild(btn);
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    const span = document.createElement('span');
+                    span.textContent = '...';
+                    span.className = "text-slate-300 dark:text-slate-600 px-1";
+                    container.appendChild(span);
+                }
+            }
+        }
+
+        function updateDashboard() {
+            const total = filteredBooks.length;
+            const authors = [...new Set(filteredBooks.map(b => b.author))].length;
+            const finished = filteredBooks.filter(b => b.status === 'Finished').length;
+            const toRead = filteredBooks.filter(b => b.status === 'To Read').length;
+            const years = filteredBooks.map(b => parseInt(b.year)).filter(y => !isNaN(y));
+            
+            document.getElementById('stat-total-books').textContent = total;
+            document.getElementById('stat-total-authors').textContent = authors;
+            document.getElementById('stat-read-percent').textContent = total > 0 ? Math.round((finished/total)*100) + '%' : '0%';
+            document.getElementById('stat-latest-year').textContent = years.length > 0 ? Math.max(...years) : '-';
+            document.getElementById('stat-to-read').textContent = toRead;
+
+            updateCharts();
+        }
+
+        function updateCharts() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#334155' : '#f1f5f9';
+            const labelColor = isDark ? '#94a3b8' : '#64748b';
+
+            const statusData = {
+                'To Read': filteredBooks.filter(b => b.status === 'To Read').length,
+                'Reading': filteredBooks.filter(b => b.status === 'Reading').length,
+                'Finished': filteredBooks.filter(b => b.status === 'Finished').length
+            };
+
+            const authorCounts = {};
+            filteredBooks.forEach(b => {
+                if (b.author) authorCounts[b.author] = (authorCounts[b.author] || 0) + 1;
+            });
+            const topAuthors = Object.entries(authorCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
+
+            const timelineCounts = {};
+            filteredBooks.forEach(b => { if(b.year) timelineCounts[b.year] = (timelineCounts[b.year] || 0) + 1 });
+            const timelineData = Object.entries(timelineCounts).sort((a,b) => a[0] - b[0]).slice(-10);
+
+            if (mainCharts.status) mainCharts.status.destroy();
+            mainCharts.status = new Chart(document.getElementById('statusChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusData),
+                    datasets: [{
+                        data: Object.values(statusData),
+                        backgroundColor: [isDark ? '#1e293b' : '#f1f5f9', '#fbbf24', '#10b981'],
+                        borderWidth: 0,
+                        hoverOffset: 15
+                    }]
+                },
+                options: { 
+                    cutout: '75%', 
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { 
+                                boxWidth: 10, 
+                                font: { size: 10, weight: 'bold' },
+                                color: labelColor
+                            } 
+                        } 
+                    } 
+                }
+            });
+
+            if (mainCharts.author) mainCharts.author.destroy();
+            mainCharts.author = new Chart(document.getElementById('authorChart'), {
+                type: 'bar',
+                data: {
+                    labels: topAuthors.map(a => a[0]),
+                    datasets: [{
+                        data: topAuthors.map(a => a[1]),
+                        backgroundColor: '#fbbf24',
+                        borderRadius: 12,
+                        barThickness: 20
+                    }]
+                },
+                options: { 
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        x: { display: false }, 
+                        y: { 
+                            grid: { display: false }, 
+                            ticks: { 
+                                font: { size: 10, weight: 'bold' },
+                                color: labelColor
+                            } 
+                        } 
+                    }
+                }
+            });
+
+            if (mainCharts.timeline) mainCharts.timeline.destroy();
+            mainCharts.timeline = new Chart(document.getElementById('timelineChart'), {
+                type: 'line',
+                data: {
+                    labels: timelineData.map(t => t[0]),
+                    datasets: [{
+                        data: timelineData.map(t => t[1]),
+                        borderColor: '#3b82f6',
+                        backgroundColor: isDark ? 'rgba(59, 130, 246, 0.05)' : 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#3b82f6'
+                    }]
+                },
+                options: { 
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { 
+                            grid: { color: gridColor, borderDash: [5, 5] }, 
+                            ticks: { stepSize: 1, font: { size: 10 }, color: labelColor } 
+                        },
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { font: { size: 10, weight: 'bold' }, color: labelColor } 
+                        }
+                    }
+                }
+            });
+        }
+
+        function openAddBookModal() {
+            document.getElementById('modalTitle').textContent = 'New Catalog Entry';
+            document.getElementById('bookForm').reset();
+            document.getElementById('editIndex').value = '';
+            document.getElementById('m_status').value = 'To Read';
+            openModal('bookModal');
+        }
+
+        function openEditModal(id) {
+            const idx = books.findIndex(b => b.id === id);
+            const b = books[idx];
+            document.getElementById('modalTitle').textContent = 'Edit Catalog Entry';
+            document.getElementById('editIndex').value = idx;
+            document.getElementById('m_id').value = b.id;
+            document.getElementById('m_title').value = b.title;
+            document.getElementById('m_author').value = b.author;
+            document.getElementById('m_genre').value = b.genre;
+            document.getElementById('m_year').value = b.year;
+            document.getElementById('m_shelf').value = b.shelf;
+            document.getElementById('m_status').value = b.status;
+            document.getElementById('m_ref').value = b.ref;
+            document.getElementById('m_notes').value = b.notes;
+            openModal('bookModal');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const idx = document.getElementById('editIndex').value;
+            const data = {
+                id: document.getElementById('m_id').value,
+                title: document.getElementById('m_title').value,
+                author: document.getElementById('m_author').value,
+                genre: document.getElementById('m_genre').value,
+                year: document.getElementById('m_year').value,
+                shelf: document.getElementById('m_shelf').value,
+                status: document.getElementById('m_status').value,
+                ref: document.getElementById('m_ref').value,
+                notes: document.getElementById('m_notes').value
+            };
+
+            if (idx === "") {
+                books.push(data);
+            } else {
+                books[idx] = data;
+            }
+
+            localStorage.setItem('library_db_v2', JSON.stringify(books));
+            closeModal('bookModal');
+            initFilters();
+            handleSearch();
+        }
+
+        function showCustomConfirm(title, message, onConfirm) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmYesBtn').onclick = () => {
+                onConfirm();
+                closeModal('confirmModal');
+            };
+            openModal('confirmModal');
+            lucide.createIcons();
+        }
+
+        function deleteBook(id) {
+            const b = books.find(book => book.id === id);
+            showCustomConfirm(
+                'စာအုပ်ကို ဖျက်ရန် အတည်ပြုပါ',
+                `"${b.title}" စာအုပ်မှတ်တမ်းကို ဖျက်ရန် သေချာပါသလား? ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။`,
+                () => {
+                    books = books.filter(book => book.id !== id);
+                    localStorage.setItem('library_db_v2', JSON.stringify(books));
+                    initFilters();
+                    handleSearch();
+                }
+            );
+        }
+
+        function confirmReset() {
+            showCustomConfirm(
+                'ဒေတာဘေ့စ်တစ်ခုလုံးကို ဖျက်ရန်',
+                'သတိပေးချက်- သင်၏စာအုပ်မှတ်တမ်းများအားလုံး အပြီးတိုင် ပျက်သွားပါမည်။ ဆက်လက်လုပ်ဆောင်မှာ သေချာပါသလား?',
+                () => {
+                    books = [];
+                    localStorage.removeItem('library_db_v2');
+                    initFilters();
+                    handleSearch();
+                }
+            );
+        }
+
+        function openModal(id) { 
+            const el = document.getElementById(id);
+            el.style.display = 'flex'; 
+        }
+        function closeModal(id) { 
+            const el = document.getElementById(id);
+            el.style.display = 'none'; 
+        }
+
+        function openImportModal() {
+            document.getElementById('csvInput').value = '';
+            document.getElementById('csvFileInput').value = '';
+            openModal('importModal');
+        }
+
+        function triggerFileInput() {
+            document.getElementById('csvFileInput').click();
+        }
+
+        function handleCSVFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('csvInput').value = e.target.result;
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function parseCSVLine(text) {
+            let insideQuote = false;
+            let result = [];
+            let currentField = '';
+            for (let i = 0; i < text.length; i++) {
+                let char = text[i];
+                let nextChar = text[i+1];
+                if (char === '"') {
+                    if (insideQuote && nextChar === '"') {
+                        currentField += '"';
+                        i++;
+                    } else {
+                        insideQuote = !insideQuote;
+                    }
+                } else if (char === ',' && !insideQuote) {
+                    result.push(currentField);
+                    currentField = '';
+                } else if ((char === '\r' || char === '\n') && !insideQuote) {
+                } else {
+                    currentField += char;
+                }
+            }
+            result.push(currentField);
+            return result;
+        }
+
+        function processCSV() {
+            const input = document.getElementById('csvInput').value.trim();
+            if(!input) return;
+            const lines = input.split('\n');
+            const newBooks = lines.slice(1).map(line => {
+                if(!line.trim()) return null;
+                const parts = parseCSVLine(line.trim());
+                return {
+                    id: parts[0] || '#000',
+                    title: parts[1] || 'Unknown',
+                    author: parts[2] || 'Unknown',
+                    genre: parts[3] || 'General',
+                    year: parts[4] || '',
+                    shelf: parts[5] || 'Unassigned',
+                    notes: parts[6] || '',
+                    ref: parts[8] || '',
+                    status: parts[9] || 'To Read'
+                };
+            }).filter(Boolean);
+            
+            books = [...books, ...newBooks];
+            localStorage.setItem('library_db_v2', JSON.stringify(books));
+            closeModal('importModal');
+            initFilters();
+            handleSearch();
+        }
+
+        function exportCSV() {
+            let csv = "ID,Title,Author,Genre,Year,Shelf,Notes,Condition,Ref,Status\n";
+            books.forEach(b => {
+                csv += `"${b.id}","${b.title}","${b.author}","${b.genre}","${b.year}","${b.shelf}","${b.notes}","","${b.ref}","${b.status}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'library_export.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
