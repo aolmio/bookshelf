@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Personal Library Pro</title>
+    <title>Family Library Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -17,63 +17,104 @@
                 extend: {
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        fun: ['Fredoka', 'sans-serif'],
                     },
                     colors: {
                         slate: {
                             850: '#151e2e',
                             900: '#0f172a',
                             950: '#020617',
+                        },
+                        cream: {
+                            100: '#fdfbf7',
+                            200: '#f7f4eb',
+                            300: '#eddcb9',
+                            800: '#422a1d'
                         }
+                    },
+                    boxShadow: {
+                        'neo': '0 8px 0px 0px rgba(0, 0, 0, 0.1)',
+                        'neo-sm': '0 4px 0px 0px rgba(0, 0, 0, 0.1)',
+                        'neo-emerald': '0 6px 0px 0px #047857',
+                        'neo-rose': '0 6px 0px 0px #b91c1c',
                     }
                 }
             }
         }
     </script>
     <style>
-        body { -webkit-tap-highlight-color: transparent; }
-        .chart-wrapper { position: relative; height: 220px; width: 100%; }
-        @media (min-width: 1024px) { .chart-wrapper { height: 260px; } }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        body { 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .chart-wrapper { position: relative; height: 180px; width: 100%; }
+        @media (min-width: 1024px) { .chart-wrapper { height: 210px; } }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; border: 2px solid transparent; background-clip: padding-box; }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border: 2px solid transparent; background-clip: padding-box; }
-        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .dark .glass-header { background: rgba(15, 23, 42, 0.85); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+        .wood-shelf {
+            background: linear-gradient(to bottom, #d7a15c 0%, #c58b43 30%, #a26b27 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+        .dark .wood-shelf {
+            background: linear-gradient(to bottom, #603813 0%, #4a280a 30%, #2f1400 100%);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+        .spine-gradient-1 { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); }
+        .spine-gradient-2 { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); }
+        .spine-gradient-3 { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+        .spine-gradient-4 { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
+        .spine-gradient-5 { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
+        .spine-gradient-6 { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+        .spine-gradient-7 { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%); }
+        .bounce-hover:hover {
+            transform: translateY(-4px);
+        }
         input[type="text"], select, textarea { appearance: none; }
     </style>
 </head>
-<body class="h-full flex flex-col bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+<body class="h-full flex flex-col bg-amber-[50]/30 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
-    <header class="glass-header sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
-        <div class="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center justify-between w-full sm:w-auto">
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/95 backdrop-blur-md border-b-4 border-slate-900 dark:border-slate-800 shadow-neo-sm transition-all duration-300">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center justify-between w-full md:w-auto">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl shadow-lg shadow-emerald-500/30">
-                        <i data-lucide="library-big" class="w-6 h-6 text-white"></i>
+                    <div class="p-2 bg-yellow-400 dark:bg-yellow-500 rounded-2xl border-4 border-slate-900 shadow-neo-sm animate-bounce">
+                        <i data-lucide="book-heart" class="w-8 h-8 text-slate-900"></i>
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">Family Library <span class="text-emerald-500">Pro</span></h1>
+                        <h1 class="text-2xl sm:text-3xl font-fun font-black tracking-tight text-slate-900 dark:text-white leading-none">
+                            Family Library <span class="text-amber-500 dark:text-yellow-400">Pro</span>
+                        </h1>
+                        <p class="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide mt-1">Super friendly digital bookshelf!</p>
                     </div>
                 </div>
-                <button onclick="toggleDarkMode()" class="sm:hidden p-2.5 bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-xl active:scale-95 transition-transform">
+                
+                <button onclick="toggleDarkMode()" class="md:hidden p-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-2xl border-2 border-slate-900 dark:border-slate-700 active:scale-95 transition-transform">
                     <i id="themeIconMobile" data-lucide="sun" class="w-5 h-5"></i>
                 </button>
             </div>
             
-            <div class="flex items-center flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto justify-end">
-                <button onclick="toggleDarkMode()" class="hidden sm:flex p-2.5 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all">
+            <div class="flex items-center flex-wrap sm:flex-nowrap gap-2.5 w-full md:w-auto justify-end">
+                <button onclick="toggleDarkMode()" class="hidden md:flex p-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl border-2 border-slate-900 dark:border-slate-700 transition-all shadow-neo-sm">
                     <i id="themeIcon" data-lucide="sun" class="w-5 h-5"></i>
                 </button>
-                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-emerald-500/25 transition-all active:scale-95 whitespace-nowrap">
-                    <i data-lucide="cloud-download" class="w-4 h-4"></i> <span class="hidden sm:inline">Sync</span>
+                
+                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-400 hover:bg-emerald-500 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm whitespace-nowrap">
+                    <i data-lucide="cloud-download" class="w-5 h-5"></i> <span>Sync Sheet</span>
                 </button>
-                <button onclick="openImportModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
-                    <i data-lucide="file-up" class="w-4 h-4"></i> Import
+                
+                <button onclick="openImportModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-sky-300 hover:bg-sky-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm">
+                    <i data-lucide="file-up" class="w-5 h-5"></i> <span>Import</span>
                 </button>
-                <button onclick="exportCSV()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
-                    <i data-lucide="file-down" class="w-4 h-4"></i> Export
+                
+                <button onclick="exportCSV()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-violet-300 hover:bg-violet-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm">
+                    <i data-lucide="file-down" class="w-5 h-5"></i> <span>Export</span>
                 </button>
-                <button onclick="confirmReset()" class="p-2.5 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-xl transition-all active:scale-95">
+                
+                <button onclick="confirmReset()" class="p-3 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-2xl border-2 border-slate-900 shadow-neo-sm transition-all active:scale-95">
                     <i data-lucide="trash-2" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -82,63 +123,69 @@
 
     <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
         
-        <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
-            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="w-10 h-10 flex items-center justify-center bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl"><i data-lucide="book-open" class="w-5 h-5"></i></div>
-                    <span id="stat-books-delta" class="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-full">+100%</span>
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+                <div class="space-y-2">
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Total Library</p>
+                    <h3 id="stat-total-books" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0</h3>
+                    <p class="text-[11px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block">Living Records</p>
                 </div>
-                <div>
-                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total Library</p>
-                    <h3 id="stat-total-books" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
-                </div>
-            </div>
-            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
-                <div class="w-10 h-10 flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-2xl mb-3"><i data-lucide="users" class="w-5 h-5"></i></div>
-                <div>
-                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Active Authors</p>
-                    <h3 id="stat-total-authors" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
+                <div class="w-16 h-16 flex items-center justify-center bg-emerald-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                    <i data-lucide="book-open" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
-                <div class="w-10 h-10 flex items-center justify-center bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-2xl mb-3"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
-                <div>
-                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Read Progress</p>
-                    <h3 id="stat-read-percent" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0%</h3>
+            
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+                <div class="space-y-2">
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Creative Authors</p>
+                    <h3 id="stat-total-authors" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0</h3>
+                    <p class="text-[11px] font-bold text-blue-500 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-full inline-block">Active minds</p>
+                </div>
+                <div class="w-16 h-16 flex items-center justify-center bg-blue-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                    <i data-lucide="users" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
-                <div class="w-10 h-10 flex items-center justify-center bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl mb-3"><i data-lucide="calendar" class="w-5 h-5"></i></div>
-                <div>
-                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Newest Release</p>
-                    <h3 id="stat-latest-year" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">-</h3>
+            
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+                <div class="space-y-2">
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Read Progress</p>
+                    <h3 id="stat-read-percent" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0%</h3>
+                    <p class="text-[11px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full inline-block">Completed</p>
+                </div>
+                <div class="w-16 h-16 flex items-center justify-center bg-indigo-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                    <i data-lucide="award" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
-            <div class="col-span-2 lg:col-span-1 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
-                <div class="w-10 h-10 flex items-center justify-center bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-2xl mb-3"><i data-lucide="bookmark" class="w-5 h-5"></i></div>
-                <div>
-                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">On Wishlist</p>
-                    <h3 id="stat-to-read" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
+            
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+                <div class="space-y-2">
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Newest Release</p>
+                    <h3 id="stat-latest-year" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">-</h3>
+                    <p class="text-[11px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full inline-block">Freshest publication</p>
+                </div>
+                <div class="w-16 h-16 flex items-center justify-center bg-amber-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
         </section>
 
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800">
-                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Reading Status
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850">
+                <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-slate-900"></span> Reading Status
                 </h4>
                 <div class="chart-wrapper"><canvas id="statusChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800">
-                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> Timeline
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850">
+                <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-sky-400 border-2 border-slate-900"></span> Publication Timeline
                 </h4>
                 <div class="chart-wrapper"><canvas id="timelineChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 md:col-span-2 lg:col-span-1">
-                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-500"></span> Top Authors
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 md:col-span-2 lg:col-span-1">
+                <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 border-2 border-slate-900"></span> Top Authors
                 </h4>
                 <div class="chart-wrapper"><canvas id="authorChart"></canvas></div>
             </div>
@@ -147,119 +194,161 @@
         <div class="flex flex-col xl:flex-row gap-6">
             
             <aside class="w-full xl:w-80 flex-shrink-0 flex flex-col">
-                <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 p-5 flex flex-col h-[400px] xl:h-[800px] sticky top-24">
-                    <div class="mb-5">
-                        <h3 class="font-black text-slate-900 dark:text-white flex items-center gap-2 text-lg">
-                            <i data-lucide="contact" class="w-5 h-5 text-emerald-500"></i> Directory
+                <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 p-5 flex flex-col h-[400px] xl:h-[750px] sticky top-24">
+                    <div class="mb-4">
+                        <h3 class="font-fun font-black text-slate-900 dark:text-white flex items-center gap-2 text-xl">
+                            <i data-lucide="notebook-tabs" class="w-6 h-6 text-emerald-500"></i> Author Finder
                         </h3>
+                        <p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Tap an author to filter their work instantly</p>
                     </div>
                     <div class="relative mb-4">
                         <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                        <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Filter authors..." class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 dark:text-white transition-all">
+                        <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Type author's name..." class="w-full pl-9 pr-3 py-3 text-sm rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all font-medium">
                     </div>
-                    <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1" id="authorListContainer"></div>
-                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-2">
-                        <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="x-circle" class="w-4 h-4"></i> Show All
+                    
+                    <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2" id="authorListContainer"></div>
+                    
+                    <div class="pt-4 border-t-2 border-slate-100 dark:border-slate-800 mt-2">
+                        <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-3 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl text-xs font-black font-fun border-2 border-slate-900 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="x" class="w-4 h-4"></i> Show All Authors
                         </button>
                     </div>
                 </div>
             </aside>
 
-            <section class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 overflow-hidden min-h-[600px]">
-                <div class="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 flex flex-col gap-4">
+            <section class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 overflow-hidden min-h-[600px]">
+                
+                <div class="p-4 sm:p-6 border-b-4 border-slate-900 dark:border-slate-850 bg-yellow-100/40 dark:bg-slate-900/40 flex flex-col gap-5">
+                    
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900 dark:text-white">Catalog Database</h2>
-                            <p class="text-sm font-semibold text-slate-500 dark:text-slate-400 mt-1">Showing <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400 font-bold">0 / 0</span> records</p>
+                            <h2 class="text-2xl font-fun font-black text-slate-900 dark:text-white">The Catalog</h2>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 mt-1">
+                                We found <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400 font-extrabold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-md">0 / 0</span> records matching your vision!
+                            </p>
                         </div>
-                        <button onclick="openAddBookModal()" class="w-full sm:w-auto bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold px-6 py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Add Record
-                        </button>
+                        
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <button onclick="openAddBookModal()" class="flex-1 sm:flex-none bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-fun font-black px-6 py-3.5 rounded-2xl transition-all shadow-neo-sm border-2 border-slate-900 flex items-center justify-center gap-2 active:scale-95">
+                                <i data-lucide="plus-circle" class="w-5 h-5"></i> Add New Book
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mt-2">
-                        <div class="relative sm:col-span-6">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                        <div class="relative md:col-span-4">
                             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search title, ref, id..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 dark:text-white transition-all text-sm font-medium">
+                            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search titles, identifiers, tags..." class="w-full pl-11 pr-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-850 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all text-sm font-semibold">
                         </div>
-                        <div class="sm:col-span-3">
-                            <select id="genreFilter" onchange="handleSearch()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm font-medium transition-all">
-                                <option value="">All Genres</option>
+                        <div class="md:col-span-3">
+                            <select id="genreFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-bold transition-all">
+                                <option value="">All Categories</option>
                             </select>
                         </div>
-                        <div class="sm:col-span-3">
-                            <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm font-medium transition-all">
-                                <option value="">Any Status</option>
+                        <div class="md:col-span-3">
+                            <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-bold transition-all">
+                                <option value="">Any Reading Status</option>
                                 <option value="To Read">To Read</option>
                                 <option value="Reading">Reading</option>
                                 <option value="Finished">Finished</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-
-                <div class="flex-1 p-4 sm:p-6 bg-slate-50/30 dark:bg-slate-950/30">
-                    <div id="catalogList" class="flex flex-col gap-3"></div>
-                    
-                    <div id="emptyState" class="hidden py-20 flex-col items-center justify-center text-center">
-                        <div class="p-5 bg-slate-100 dark:bg-slate-800/80 rounded-3xl mb-5 text-slate-400 dark:text-slate-500">
-                            <i data-lucide="book-x" class="w-10 h-10"></i>
+                        <div class="md:col-span-2 flex items-center justify-end gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border-2 border-slate-900 dark:border-slate-700">
+                            <button onclick="changeView('shelf')" id="viewBtn-shelf" class="flex-1 py-2 text-slate-600 dark:text-slate-300 rounded-lg flex justify-center items-center hover:bg-white dark:hover:bg-slate-700 transition-all" title="Shelf View">
+                                <i data-lucide="library" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="changeView('grid')" id="viewBtn-grid" class="flex-1 py-2 text-slate-600 dark:text-slate-300 rounded-lg flex justify-center items-center hover:bg-white dark:hover:bg-slate-700 transition-all" title="Grid View">
+                                <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="changeView('table')" id="viewBtn-table" class="flex-1 py-2 text-slate-600 dark:text-slate-300 rounded-lg flex justify-center items-center hover:bg-white dark:hover:bg-slate-700 transition-all" title="Table View">
+                                <i data-lucide="list" class="w-4 h-4"></i>
+                            </button>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1">No matches found</h3>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Adjust your search filters or add a new record to see it here.</p>
                     </div>
                 </div>
 
-                <div class="p-4 sm:p-6 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg" id="paginationInfo">Showing 0 to 0 of 0</div>
-                    <div class="flex items-center gap-1 sm:gap-2" id="paginationControls"></div>
+                <div class="flex-1 p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950/20">
+                    
+                    <div id="shelfViewContainer" class="hidden space-y-8 py-4"></div>
+                    
+                    <div id="gridViewContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    
+                    <div id="tableViewContainer" class="hidden overflow-x-auto rounded-2xl border-2 border-slate-900 dark:border-slate-700">
+                        <table class="w-full text-left border-collapse bg-white dark:bg-slate-900">
+                            <thead>
+                                <tr class="bg-slate-100 dark:bg-slate-800 border-b-2 border-slate-900 dark:border-slate-700 font-fun font-black text-slate-800 dark:text-slate-200">
+                                    <th class="p-4 text-xs tracking-wider uppercase">Book ID</th>
+                                    <th class="p-4 text-xs tracking-wider uppercase">Title</th>
+                                    <th class="p-4 text-xs tracking-wider uppercase">Author</th>
+                                    <th class="p-4 text-xs tracking-wider uppercase">Category</th>
+                                    <th class="p-4 text-xs tracking-wider uppercase">Status</th>
+                                    <th class="p-4 text-xs tracking-wider uppercase text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="divide-y-2 divide-slate-100 dark:divide-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emptyState" class="hidden py-16 flex-col items-center justify-center text-center">
+                        <div class="p-5 bg-yellow-100 dark:bg-slate-800/80 rounded-full mb-5 border-4 border-slate-900 text-slate-900 dark:text-slate-200">
+                            <i data-lucide="ghost" class="w-12 h-12"></i>
+                        </div>
+                        <h3 class="text-xl font-fun font-black text-slate-800 dark:text-slate-200 mb-1">No Books Found!</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Try adjusting your filters, searching for something else, or creating a new book card.</p>
+                    </div>
+                </div>
+
+                <div class="p-4 sm:p-6 bg-white dark:bg-slate-900 border-t-4 border-slate-900 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs font-black text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700" id="paginationInfo">Showing 0 to 0 of 0</div>
+                    <div class="flex items-center gap-1.5" id="paginationControls"></div>
                 </div>
             </section>
         </div>
     </main>
 
-    <div id="bookModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-2xl w-full h-[90vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
-            <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
-                <h3 id="modalTitle" class="text-xl font-black text-slate-900 dark:text-white">Add Record</h3>
-                <button type="button" onclick="closeModal('bookModal')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+    <div id="bookModal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-2xl w-full h-[90vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-700">
+            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-850 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
+                <h3 id="modalTitle" class="text-2xl font-fun font-black text-slate-900 dark:text-white">Add Book Card</h3>
+                <button type="button" onclick="closeModal('bookModal')" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-colors border-2 border-transparent hover:border-slate-900">
+                    <i data-lucide="x" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
+                </button>
             </div>
             <div class="flex-1 overflow-y-auto custom-scrollbar p-6">
                 <form id="bookForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
                     <input type="hidden" id="editIndex">
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
                         <div class="sm:col-span-1">
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">ID</label>
-                            <input type="text" id="m_id" required placeholder="#001" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-bold transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Book ID</label>
+                            <input type="text" id="m_id" required placeholder="#001" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold transition-all">
                         </div>
                         <div class="sm:col-span-3">
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Title</label>
-                            <input type="text" id="m_title" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Book Title</label>
+                            <input type="text" id="m_title" required placeholder="What is the story called?" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all font-semibold">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Author</label>
-                            <input type="text" id="m_author" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Author Name</label>
+                            <input type="text" id="m_author" required placeholder="Who wrote this adventure?" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all font-semibold">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Category</label>
-                            <input type="text" id="m_genre" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Category / Genre</label>
+                            <input type="text" id="m_genre" required placeholder="Fantasy, Science, Mystery..." class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all font-semibold">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Year</label>
-                            <input type="text" id="m_year" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Publish Year</label>
+                            <input type="text" id="m_year" placeholder="e.g. 2021" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all font-semibold">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Shelf</label>
-                            <input type="text" id="m_shelf" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-semibold transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Shelf Location</label>
+                            <input type="text" id="m_shelf" placeholder="e.g. A3, Kids Section" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold transition-all">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Status</label>
-                            <select id="m_status" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-bold transition-all">
+                            <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Status</label>
+                            <select id="m_status" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold transition-all">
                                 <option value="To Read">To Read</option>
                                 <option value="Reading">Reading</option>
                                 <option value="Finished">Finished</option>
@@ -267,64 +356,66 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Reference URL</label>
-                        <input type="text" id="m_ref" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-medium transition-all">
+                        <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Reference URL / Web Link</label>
+                        <input type="text" id="m_ref" placeholder="https://..." class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold transition-all">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Notes</label>
-                        <textarea id="m_notes" rows="3" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm custom-scrollbar transition-all"></textarea>
+                        <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Personal Notes</label>
+                        <textarea id="m_notes" rows="3" placeholder="What are your thoughts about this book?" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm custom-scrollbar transition-all font-semibold"></textarea>
                     </div>
                 </form>
             </div>
-            <div class="px-6 py-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
-                <button type="button" onclick="closeModal('bookModal')" class="flex-1 sm:flex-none px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button type="submit" form="bookForm" class="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-md shadow-emerald-500/20 transition-all active:scale-95">Save Record</button>
+            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-850 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+                <button type="button" onclick="closeModal('bookModal')" class="flex-1 sm:flex-none px-6 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button type="submit" form="bookForm" class="flex-1 sm:flex-none px-8 py-3.5 rounded-xl bg-emerald-400 hover:bg-emerald-500 text-slate-950 font-black font-fun shadow-neo-sm border-2 border-slate-900 active:scale-95 transition-all">Save Book</button>
             </div>
         </div>
     </div>
 
-    <div id="importModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-2xl w-full h-[85vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
-            <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
-                <h3 class="text-xl font-black text-slate-900 dark:text-white">Import Data</h3>
-                <button onclick="closeModal('importModal')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+    <div id="importModal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-2xl w-full h-[85vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-700">
+            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-850 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
+                <h3 class="text-2xl font-fun font-black text-slate-900 dark:text-white">Import Records</h3>
+                <button onclick="closeModal('importModal')" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-colors border-2 border-transparent hover:border-slate-900">
+                    <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+                </button>
             </div>
             <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-                <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:border-emerald-500 dark:hover:bg-emerald-500/5 transition-all cursor-pointer group" onclick="triggerFileInput()">
+                <div class="border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50 dark:bg-slate-800/30 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:border-emerald-500 dark:hover:bg-emerald-500/5 transition-all cursor-pointer group" onclick="triggerFileInput()">
                     <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVFileSelect(event)" class="hidden">
                     <div class="flex flex-col items-center justify-center pointer-events-none">
-                        <div class="p-4 bg-white dark:bg-slate-800 rounded-full shadow-sm mb-4 text-slate-400 group-hover:text-emerald-500 transition-colors">
-                            <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                        <div class="p-4 bg-white dark:bg-slate-850 rounded-full shadow-neo-sm border-2 border-slate-900 mb-4 text-slate-400 group-hover:text-emerald-500 transition-colors">
+                            <i data-lucide="upload-cloud" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">Upload CSV File</h4>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Tap to select from your device</p>
+                        <h4 class="text-lg font-fun font-black text-slate-800 dark:text-slate-200 mb-1">Upload CSV File</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Tap to browse files on your device</p>
                     </div>
                 </div>
                 <div class="relative flex items-center justify-center">
-                    <span class="absolute px-3 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Or Paste Raw CSV</span>
+                    <span class="absolute px-4 bg-white dark:bg-slate-900 text-xs font-black text-slate-400 uppercase tracking-widest font-fun">Or Paste CSV Plaintext</span>
                     <hr class="w-full border-slate-200 dark:border-slate-700">
                 </div>
-                <textarea id="csvInput" rows="6" placeholder="Headers: ID, Title, Author, Genre, Year, Shelf, Ref, Status" class="w-full p-4 bg-slate-50 dark:bg-slate-800/50 dark:text-white rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-mono text-xs custom-scrollbar transition-all"></textarea>
+                <textarea id="csvInput" rows="6" placeholder="Headers Needed: ID, Title, Author, Genre, Year, Shelf, Notes, Condition, Ref, Status" class="w-full p-4 bg-slate-50 dark:bg-slate-800/50 dark:text-white rounded-xl border-2 border-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-xs custom-scrollbar transition-all"></textarea>
             </div>
-            <div class="px-6 py-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
-                <button onclick="closeModal('importModal')" class="flex-1 sm:flex-none px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button onclick="processCSV()" class="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black hover:bg-slate-800 dark:hover:bg-slate-100 transition-all active:scale-95 shadow-md">Execute Import</button>
+            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-850 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+                <button onclick="closeModal('importModal')" class="flex-1 sm:flex-none px-6 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button onclick="processCSV()" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-fun font-black rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all">Import Database</button>
             </div>
         </div>
     </div>
 
-    <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-sm w-full p-6 sm:p-8 text-center space-y-6 transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
-            <div class="mx-auto w-16 h-16 bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center">
-                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+    <div id="confirmModal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-sm w-full p-6 sm:p-8 text-center space-y-6 transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-700">
+            <div class="mx-auto w-20 h-20 bg-rose-200 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center border-4 border-slate-900">
+                <i data-lucide="alert-triangle" class="w-10 h-10"></i>
             </div>
             <div class="space-y-2">
-                <h3 id="confirmTitle" class="text-xl font-black text-slate-900 dark:text-white">Confirm</h3>
-                <p id="confirmMessage" class="text-sm text-slate-500 dark:text-slate-400 font-medium"></p>
+                <h3 id="confirmTitle" class="text-2xl font-fun font-black text-slate-900 dark:text-white">Confirm</h3>
+                <p id="confirmMessage" class="text-sm text-slate-500 dark:text-slate-400 font-bold"></p>
             </div>
             <div class="flex gap-3 pt-2">
-                <button onclick="closeModal('confirmModal')" class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button id="confirmYesBtn" class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black transition-all active:scale-95 shadow-md shadow-rose-600/20">Proceed</button>
+                <button onclick="closeModal('confirmModal')" class="flex-1 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button id="confirmYesBtn" class="flex-1 py-3.5 rounded-xl bg-rose-400 hover:bg-rose-500 text-slate-950 font-fun font-black border-2 border-slate-900 shadow-neo-rose active:scale-95 transition-all">Proceed</button>
             </div>
         </div>
     </div>
@@ -333,9 +424,10 @@
         let books = [];
         let filteredBooks = [];
         let currentPage = 1;
-        const rowsPerPage = 10;
+        const rowsPerPage = 9;
         let mainCharts = {};
         let activeAuthorFilter = "";
+        let currentView = 'shelf';
 
         window.onload = () => {
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -359,7 +451,7 @@
         async function syncFromGoogleSheet(isAuto = false) {
             const btn = document.getElementById('syncBtn');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> <span class="hidden sm:inline">Syncing...</span>';
+            btn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> <span>Syncing...</span>';
             lucide.createIcons();
             
             try {
@@ -396,11 +488,11 @@
                 handleSearch();
                 
                 if (!isAuto) {
-                    showCustomConfirm('Sync Successful', 'Successfully synced records from remote source.', () => {});
+                    showCustomConfirm('Sync Complete', 'We successfully integrated records from your spreadsheet.', () => {});
                 }
             } catch (error) {
                 if (!isAuto) {
-                    showCustomConfirm('Sync Failed', 'Could not sync records. Check connection and permissions.', () => {});
+                    showCustomConfirm('Sync Failed', 'Could not sync cloud data. Please check your web connection.', () => {});
                 }
             } finally {
                 btn.innerHTML = originalContent;
@@ -426,22 +518,31 @@
             const iconMobile = document.getElementById('themeIconMobile');
             if (isDark) {
                 icon.setAttribute('data-lucide', 'sun');
-                icon.className = 'w-5 h-5 text-amber-400';
+                icon.className = 'w-5 h-5 text-yellow-300';
                 iconMobile.setAttribute('data-lucide', 'sun');
-                iconMobile.className = 'w-5 h-5 text-amber-400';
+                iconMobile.className = 'w-5 h-5 text-yellow-300';
             } else {
                 icon.setAttribute('data-lucide', 'moon');
-                icon.className = 'w-5 h-5 text-slate-500';
+                icon.className = 'w-5 h-5 text-slate-800';
                 iconMobile.setAttribute('data-lucide', 'moon');
-                iconMobile.className = 'w-5 h-5 text-slate-500';
+                iconMobile.className = 'w-5 h-5 text-slate-800';
             }
             lucide.createIcons();
+        }
+
+        function changeView(viewMode) {
+            currentView = viewMode;
+            document.getElementById('viewBtn-shelf').className = 'flex-1 py-2 rounded-lg flex justify-center items-center transition-all ' + (viewMode === 'shelf' ? 'bg-amber-400 text-slate-900 shadow-sm border border-slate-900 font-black' : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700');
+            document.getElementById('viewBtn-grid').className = 'flex-1 py-2 rounded-lg flex justify-center items-center transition-all ' + (viewMode === 'grid' ? 'bg-amber-400 text-slate-900 shadow-sm border border-slate-900 font-black' : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700');
+            document.getElementById('viewBtn-table').className = 'flex-1 py-2 rounded-lg flex justify-center items-center transition-all ' + (viewMode === 'table' ? 'bg-amber-400 text-slate-900 shadow-sm border border-slate-900 font-black' : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700');
+            
+            renderSelectedView();
         }
 
         function initFilters() {
             const genres = [...new Set(books.map(b => b.genre).filter(Boolean))].sort();
             const gFilter = document.getElementById('genreFilter');
-            gFilter.innerHTML = '<option value="">All Genres</option>' + 
+            gFilter.innerHTML = '<option value="">All Categories</option>' + 
                 genres.map(g => `<option value="${g}">${g}</option>`).join('');
             renderAuthorDirectory();
         }
@@ -459,21 +560,22 @@
             container.innerHTML = "";
 
             if (sortedAuthors.length === 0) {
-                container.innerHTML = `<div class="text-sm font-medium text-slate-400 text-center py-6">No authors available</div>`;
+                container.innerHTML = `<div class="text-sm font-black text-slate-400 text-center py-6">No authors inside</div>`;
                 return;
             }
 
             sortedAuthors.forEach(([author, count]) => {
-                const activeClass = activeAuthorFilter === author ? 
-                    "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold border border-emerald-200 dark:border-emerald-800/50" : 
-                    "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-800 font-medium";
+                const isActive = activeAuthorFilter === author;
+                const activeClass = isActive ? 
+                    "bg-emerald-300 dark:bg-emerald-600 text-slate-950 dark:text-white font-black border-2 border-slate-900 shadow-neo-sm" : 
+                    "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-2 border-slate-200 dark:border-slate-800 font-bold";
 
                 const row = document.createElement('button');
-                row.className = `w-full text-left px-4 py-3 rounded-xl text-sm flex justify-between items-center transition-all ${activeClass}`;
+                row.className = `w-full text-left px-3.5 py-3 rounded-xl text-sm flex justify-between items-center transition-all duration-200 ${activeClass}`;
                 row.onclick = () => filterByAuthor(author);
                 row.innerHTML = `
-                    <span class="truncate pr-3">${author}</span>
-                    <span class="px-2.5 py-1 ${activeAuthorFilter === author ? 'bg-emerald-100 dark:bg-emerald-800/50 text-emerald-700 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'} rounded-lg font-bold text-[10px] min-w-[24px] text-center">${count}</span>
+                    <span class="truncate pr-2">${author}</span>
+                    <span class="px-2 py-0.5 ${isActive ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'} rounded-lg font-black text-xs border border-slate-300 dark:border-slate-700 min-w-[24px] text-center">${count}</span>
                 `;
                 container.appendChild(row);
             });
@@ -500,11 +602,7 @@
         }
 
         function filterByAuthor(author) {
-            if (activeAuthorFilter === author) {
-                activeAuthorFilter = "";
-            } else {
-                activeAuthorFilter = author;
-            }
+            activeAuthorFilter = activeAuthorFilter === author ? "" : author;
             renderAuthorDirectory();
             handleSearch();
         }
@@ -538,62 +636,184 @@
             currentPage = 1;
             document.getElementById('rowCounter').textContent = `${filteredBooks.length} / ${books.length}`;
             updateDashboard();
-            renderTable();
+            renderSelectedView();
         }
 
-        function renderTable() {
+        function renderSelectedView() {
             const start = (currentPage - 1) * rowsPerPage;
             const end = start + rowsPerPage;
             const paginatedItems = filteredBooks.slice(start, end);
-            const container = document.getElementById('catalogList');
             
-            container.innerHTML = '';
-            
+            document.getElementById('shelfViewContainer').classList.add('hidden');
+            document.getElementById('gridViewContainer').classList.add('hidden');
+            document.getElementById('tableViewContainer').classList.add('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+
             if (paginatedItems.length === 0) {
                 document.getElementById('emptyState').classList.remove('hidden');
                 document.getElementById('emptyState').classList.add('flex');
-            } else {
-                document.getElementById('emptyState').classList.add('hidden');
-                document.getElementById('emptyState').classList.remove('flex');
+                renderPagination();
+                return;
+            }
+
+            if (currentView === 'shelf') {
+                renderShelfView(paginatedItems);
+            } else if (currentView === 'grid') {
+                renderGridView(paginatedItems);
+            } else if (currentView === 'table') {
+                renderTableView(paginatedItems);
+            }
+
+            renderPagination();
+        }
+
+        function getSpineClass(title) {
+            let sum = 0;
+            for (let i = 0; i < title.length; i++) {
+                sum += title.charCodeAt(i);
+            }
+            const spineId = (sum % 7) + 1;
+            return `spine-gradient-${spineId}`;
+        }
+
+        function renderShelfView(items) {
+            const container = document.getElementById('shelfViewContainer');
+            container.innerHTML = '';
+            container.classList.remove('hidden');
+
+            const booksPerShelf = 3;
+            for (let i = 0; i < items.length; i += booksPerShelf) {
+                const shelfGroup = items.slice(i, i + booksPerShelf);
                 
-                paginatedItems.forEach(b => {
-                    const statusBg = b.status === 'Finished' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 
-                                     b.status === 'Reading' ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' : 
-                                     'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+                const shelfDiv = document.createElement('div');
+                shelfDiv.className = "relative flex flex-col justify-end pt-12";
+                
+                const shelfRow = document.createElement('div');
+                shelfRow.className = "flex justify-center items-end gap-3 sm:gap-6 px-4 sm:px-12 z-10 min-h-[160px]";
+                
+                shelfGroup.forEach(b => {
+                    const statusClass = b.status === 'Finished' ? 'border-emerald-400 bg-emerald-400' : 
+                                        b.status === 'Reading' ? 'border-amber-400 bg-amber-400' : 
+                                        'border-slate-400 bg-slate-300';
                     
-                    const card = document.createElement('div');
-                    card.className = "flex flex-col lg:flex-row lg:items-center justify-between p-4 sm:p-5 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all gap-4";
-                    card.innerHTML = `
-                        <div class="flex-1 flex flex-col gap-2.5">
-                            <div class="flex flex-wrap items-center gap-2">
-                                <span class="text-xs font-black text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">${b.id}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${statusBg}">${b.status}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">${b.genre}</span>
+                    const bookCol = document.createElement('div');
+                    bookCol.className = "group relative flex flex-col items-center cursor-pointer transition-all duration-300 bounce-hover";
+                    bookCol.style.width = "100px";
+                    bookCol.onclick = () => openEditModal(b.id);
+                    bookCol.innerHTML = `
+                        <div class="relative w-16 sm:w-20 h-32 sm:h-40 ${getSpineClass(b.title)} rounded-t-lg border-2 border-slate-900 shadow-neo flex flex-col justify-between p-2 text-white overflow-hidden">
+                            <div class="w-full h-1 bg-white/30 rounded-full"></div>
+                            <div class="flex-1 flex items-center justify-center">
+                                <h4 class="font-fun font-black text-[10px] sm:text-xs text-center leading-tight tracking-tight rotate-[-90deg] uppercase whitespace-nowrap overflow-hidden text-ellipsis w-24">
+                                    ${b.title}
+                                </h4>
                             </div>
-                            <div>
-                                <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight mb-1">${b.title}</h3>
-                                <p class="text-sm font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5"><i data-lucide="pen-tool" class="w-3.5 h-3.5"></i>${b.author}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-black opacity-80">${b.id}</span>
+                                <div class="w-2.5 h-2.5 rounded-full ${statusClass} border border-slate-900"></div>
                             </div>
                         </div>
-                        <div class="flex flex-wrap lg:flex-col justify-start lg:justify-center gap-x-5 gap-y-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 min-w-[140px]">
-                            <div class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> ${b.year || 'N/A'}</div>
-                            <div class="flex items-center gap-2"><i data-lucide="library" class="w-4 h-4 text-slate-400"></i> ${b.shelf || 'N/A'}</div>
-                            <div class="flex items-center gap-2 truncate max-w-[200px]"><i data-lucide="link" class="w-4 h-4 text-slate-400"></i> ${b.ref || 'N/A'}</div>
-                        </div>
-                        <div class="flex items-center gap-2 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800 mt-2 lg:mt-0">
-                            <button onclick="openEditModal('${b.id}')" class="flex-1 lg:flex-none flex items-center justify-center gap-2 p-3 sm:px-4 sm:py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-xl transition-all font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:border-emerald-200 dark:hover:border-emerald-800 active:scale-95">
-                                <i data-lucide="edit-2" class="w-4 h-4"></i><span class="lg:hidden">Edit</span>
-                            </button>
-                            <button onclick="deleteBook('${b.id}')" class="flex-1 lg:flex-none flex items-center justify-center gap-2 p-3 sm:px-4 sm:py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 rounded-xl transition-all font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:border-rose-200 dark:hover:border-rose-800 active:scale-95">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i><span class="lg:hidden">Delete</span>
-                            </button>
+                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-slate-900 dark:bg-slate-800 text-white text-[11px] font-bold p-3 rounded-2xl border-2 border-slate-700 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 shadow-xl text-center">
+                            <p class="font-black text-amber-300">${b.title}</p>
+                            <p class="text-[10px] mt-0.5 opacity-80">by ${b.author}</p>
+                            <p class="mt-1 text-[9px] uppercase px-2 py-0.5 rounded-full inline-block bg-slate-850 border border-slate-700">${b.genre}</p>
                         </div>
                     `;
-                    container.appendChild(card);
+                    shelfRow.appendChild(bookCol);
                 });
-                lucide.createIcons();
+
+                const woodLedge = document.createElement('div');
+                woodLedge.className = "wood-shelf w-full h-5 rounded-lg border-2 border-slate-900 relative z-20 mt-1";
+                
+                shelfDiv.appendChild(shelfRow);
+                shelfDiv.appendChild(woodLedge);
+                container.appendChild(shelfDiv);
             }
-            renderPagination();
+            lucide.createIcons();
+        }
+
+        function renderGridView(items) {
+            const container = document.getElementById('gridViewContainer');
+            container.innerHTML = '';
+            container.classList.remove('hidden');
+
+            items.forEach(b => {
+                const statusBg = b.status === 'Finished' ? 'bg-emerald-300 text-slate-950' : 
+                                 b.status === 'Reading' ? 'bg-amber-300 text-slate-950' : 
+                                 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+                
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-900 p-5 rounded-[2rem] border-4 border-slate-900 dark:border-slate-800 shadow-neo flex flex-col justify-between gap-4 transition-all hover:-translate-y-1";
+                card.innerHTML = `
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-850 px-2.5 py-1 rounded-xl border border-slate-200 dark:border-slate-700">${b.id}</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border-2 border-slate-900 ${statusBg}">${b.status}</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-fun font-black text-slate-900 dark:text-white leading-tight cursor-pointer hover:text-amber-500" onclick="openEditModal('${b.id}')">${b.title}</h3>
+                            <p class="text-xs font-bold text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-1.5"><i data-lucide="pen-tool" class="w-3.5 h-3.5 text-slate-400"></i> ${b.author}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 text-xs font-black text-slate-500 dark:text-slate-400 border-t border-b border-dashed border-slate-200 dark:border-slate-800 py-3 mt-1">
+                        <div class="flex items-center gap-1.5"><i data-lucide="compass" class="w-4 h-4 text-sky-400"></i> ${b.genre}</div>
+                        <div class="flex items-center gap-1.5"><i data-lucide="library" class="w-4 h-4 text-emerald-400"></i> ${b.shelf || 'N/A'}</div>
+                        <div class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 text-yellow-400"></i> ${b.year || 'N/A'}</div>
+                        <div class="flex items-center gap-1.5 truncate"><i data-lucide="link" class="w-4 h-4 text-violet-400"></i> ${b.ref ? 'Available' : 'None'}</div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-2">
+                        <button onclick="openEditModal('${b.id}')" class="flex-1 py-2.5 bg-yellow-300 hover:bg-yellow-400 text-slate-950 font-fun font-black rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-xs flex items-center justify-center gap-1.5">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
+                        </button>
+                        <button onclick="deleteBook('${b.id}')" class="p-2.5 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function renderTableView(items) {
+            const container = document.getElementById('tableViewContainer');
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            container.classList.remove('hidden');
+
+            items.forEach(b => {
+                const statusBg = b.status === 'Finished' ? 'bg-emerald-300 text-slate-950' : 
+                                 b.status === 'Reading' ? 'bg-amber-300 text-slate-950' : 
+                                 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
+                
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4 font-black">${b.id}</td>
+                    <td class="p-4 font-fun font-black text-slate-900 dark:text-white cursor-pointer hover:text-amber-500" onclick="openEditModal('${b.id}')">${b.title}</td>
+                    <td class="p-4">${b.author}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 dark:bg-sky-500/10 dark:text-sky-300 border border-sky-200 dark:border-sky-800">${b.genre}</span>
+                    </td>
+                    <td class="p-4">
+                        <span class="text-xs px-2.5 py-1 rounded-full border-2 border-slate-900 font-bold ${statusBg}">${b.status}</span>
+                    </td>
+                    <td class="p-4 text-right">
+                        <div class="inline-flex items-center gap-1.5">
+                            <button onclick="openEditModal('${b.id}')" class="p-2 bg-yellow-300 hover:bg-yellow-400 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-neo-sm active:scale-95">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="deleteBook('${b.id}')" class="p-2 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-neo-sm active:scale-95">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
         }
 
         function renderPagination() {
@@ -606,19 +826,19 @@
 
             if (totalPages <= 1) return;
 
-            const btnClass = "w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-sm font-bold transition-all active:scale-95 ";
+            const btnClass = "w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black border-2 border-slate-900 dark:border-slate-700 transition-all active:scale-95 shadow-neo-sm font-fun ";
             
             for(let i=1; i<=totalPages; i++) {
                 if(i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
                     const btn = document.createElement('button');
-                    btn.className = btnClass + (i === currentPage ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20" : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-400 dark:hover:border-emerald-600");
+                    btn.className = btnClass + (i === currentPage ? "bg-amber-400 text-slate-950 font-black" : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-800");
                     btn.textContent = i;
-                    btn.onclick = () => { currentPage = i; renderTable(); };
+                    btn.onclick = () => { currentPage = i; renderSelectedView(); };
                     container.appendChild(btn);
                 } else if (i === currentPage - 2 || i === currentPage + 2) {
                     const span = document.createElement('span');
                     span.textContent = '...';
-                    span.className = "text-slate-400 dark:text-slate-600 px-1 font-bold";
+                    span.className = "text-slate-400 dark:text-slate-600 px-1 font-black";
                     container.appendChild(span);
                 }
             }
@@ -628,22 +848,20 @@
             const total = filteredBooks.length;
             const authors = [...new Set(filteredBooks.map(b => b.author))].length;
             const finished = filteredBooks.filter(b => b.status === 'Finished').length;
-            const toRead = filteredBooks.filter(b => b.status === 'To Read').length;
             const years = filteredBooks.map(b => parseInt(b.year)).filter(y => !isNaN(y));
             
             document.getElementById('stat-total-books').textContent = total;
             document.getElementById('stat-total-authors').textContent = authors;
             document.getElementById('stat-read-percent').textContent = total > 0 ? Math.round((finished/total)*100) + '%' : '0%';
             document.getElementById('stat-latest-year').textContent = years.length > 0 ? Math.max(...years) : '-';
-            document.getElementById('stat-to-read').textContent = toRead;
 
             updateCharts();
         }
 
         function updateCharts() {
             const isDark = document.documentElement.classList.contains('dark');
-            const gridColor = isDark ? '#334155' : '#e2e8f0';
-            const labelColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? '#334155' : '#cbd5e1';
+            const labelColor = isDark ? '#94a3b8' : '#475569';
 
             const statusData = {
                 'To Read': filteredBooks.filter(b => b.status === 'To Read').length,
@@ -668,18 +886,19 @@
                     labels: Object.keys(statusData),
                     datasets: [{
                         data: Object.values(statusData),
-                        backgroundColor: [isDark ? '#334155' : '#e2e8f0', '#f59e0b', '#10b981'],
-                        borderWidth: 0,
-                        hoverOffset: 10
+                        backgroundColor: [isDark ? '#475569' : '#cbd5e1', '#f59e0b', '#10b981'],
+                        borderWidth: 2,
+                        borderColor: isDark ? '#0f172a' : '#ffffff',
+                        hoverOffset: 12
                     }]
                 },
                 options: { 
                     maintainAspectRatio: false,
-                    cutout: '75%', 
+                    cutout: '70%', 
                     plugins: { 
                         legend: { 
                             position: 'bottom', 
-                            labels: { boxWidth: 10, font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor, padding: 20 } 
+                            labels: { boxWidth: 12, font: { size: 10, family: 'Fredoka', weight: '700' }, color: labelColor, padding: 15 } 
                         } 
                     } 
                 }
@@ -692,9 +911,11 @@
                     labels: topAuthors.map(a => a[0]),
                     datasets: [{
                         data: topAuthors.map(a => a[1]),
-                        backgroundColor: '#f59e0b',
-                        borderRadius: 8,
-                        barThickness: 24
+                        backgroundColor: '#fbbf24',
+                        borderRadius: 10,
+                        borderWidth: 2,
+                        borderColor: '#000000',
+                        barThickness: 16
                     }]
                 },
                 options: { 
@@ -705,7 +926,7 @@
                         x: { display: false }, 
                         y: { 
                             grid: { display: false }, 
-                            ticks: { font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor } 
+                            ticks: { font: { size: 10, family: 'Fredoka', weight: '700' }, color: labelColor } 
                         } 
                     }
                 }
@@ -718,12 +939,14 @@
                     labels: timelineData.map(t => t[0]),
                     datasets: [{
                         data: timelineData.map(t => t[1]),
-                        borderColor: '#3b82f6',
-                        backgroundColor: isDark ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.15)',
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.15)',
                         fill: true,
                         tension: 0.4,
-                        pointRadius: 3,
-                        pointBackgroundColor: '#3b82f6',
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0ea5e9',
+                        pointBorderWidth: 2,
+                        pointBorderColor: '#000000',
                         borderWidth: 3
                     }]
                 },
@@ -732,13 +955,13 @@
                     plugins: { legend: { display: false } },
                     scales: { 
                         y: { 
-                            grid: { color: gridColor, borderDash: [4, 4] }, 
-                            ticks: { stepSize: 1, font: { size: 11, family: 'Plus Jakarta Sans' }, color: labelColor },
+                            grid: { color: gridColor, borderDash: [5, 5] }, 
+                            ticks: { stepSize: 1, font: { size: 10, family: 'Plus Jakarta Sans' }, color: labelColor },
                             border: { display: false }
                         },
                         x: { 
                             grid: { display: false }, 
-                            ticks: { font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor },
+                            ticks: { font: { size: 10, family: 'Fredoka', weight: '700' }, color: labelColor },
                             border: { display: false }
                         }
                     }
@@ -747,7 +970,7 @@
         }
 
         function openAddBookModal() {
-            document.getElementById('modalTitle').textContent = 'New Record';
+            document.getElementById('modalTitle').textContent = 'New Book Card';
             document.getElementById('bookForm').reset();
             document.getElementById('editIndex').value = '';
             document.getElementById('m_status').value = 'To Read';
@@ -757,7 +980,7 @@
         function openEditModal(id) {
             const idx = books.findIndex(b => b.id === id);
             const b = books[idx];
-            document.getElementById('modalTitle').textContent = 'Edit Record';
+            document.getElementById('modalTitle').textContent = 'Edit Book Card';
             document.getElementById('editIndex').value = idx;
             document.getElementById('m_id').value = b.id;
             document.getElementById('m_title').value = b.title;
@@ -812,8 +1035,8 @@
         function deleteBook(id) {
             const b = books.find(book => book.id === id);
             showCustomConfirm(
-                'Delete Record',
-                `Are you sure you want to delete "${b.title}"? This action cannot be undone.`,
+                'Delete Book Card',
+                `Are you sure you want to permanently delete "${b.title}"?`,
                 () => {
                     books = books.filter(book => book.id !== id);
                     sessionStorage.setItem('library_db_v2', JSON.stringify(books));
@@ -825,8 +1048,8 @@
 
         function confirmReset() {
             showCustomConfirm(
-                'Reset Database',
-                'Warning: All library records will be permanently deleted. Are you sure you want to continue?',
+                'Reset Everything',
+                'Warning: This action permanently wipes out all existing library data cards.',
                 () => {
                     books = [];
                     sessionStorage.removeItem('library_db_v2');
@@ -846,6 +1069,7 @@
                 inner.classList.remove('translate-y-full');
             }, 10);
         }
+
         function closeModal(id) { 
             const el = document.getElementById(id);
             el.classList.add('opacity-0');
