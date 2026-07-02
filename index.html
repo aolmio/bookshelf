@@ -1,175 +1,195 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full antialiased">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Personal Library Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Noto Sans Myanmar', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#151e2e',
+                            900: '#0f172a',
+                            950: '#020617',
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        .chart-container { position: relative; height: 260px; width: 100%; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        body { -webkit-tap-highlight-color: transparent; }
+        .chart-wrapper { position: relative; height: 220px; width: 100%; }
+        @media (min-width: 1024px) { .chart-wrapper { height: 260px; } }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; border: 2px solid transparent; background-clip: padding-box; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border: 2px solid transparent; background-clip: padding-box; }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .dark .glass-header { background: rgba(15, 23, 42, 0.85); }
+        input[type="text"], select, textarea { appearance: none; }
     </style>
 </head>
-<body class="h-full flex flex-col bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+<body class="h-full flex flex-col bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
-    <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-40 dark:bg-slate-900 border-b dark:border-slate-800">
-        <div class="max-w-[1600px] mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-emerald-500 rounded-2xl shadow-lg shadow-emerald-500/20">
-                    <i data-lucide="library-big" class="w-8 h-8 text-white"></i>
+    <header class="glass-header sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center justify-between w-full sm:w-auto">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl shadow-lg shadow-emerald-500/30">
+                        <i data-lucide="library-big" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">Family Library <span class="text-emerald-500">Pro</span></h1>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-extrabold tracking-tight">Family Library <span class="text-emerald-400">Pro</span></h1>
-                    <p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Management & Analytics</p>
-                </div>
+                <button onclick="toggleDarkMode()" class="sm:hidden p-2.5 bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 rounded-xl active:scale-95 transition-transform">
+                    <i id="themeIconMobile" data-lucide="sun" class="w-5 h-5"></i>
+                </button>
             </div>
-            <div class="flex items-center flex-wrap gap-3 w-full md:w-auto justify-end">
-                <button onclick="toggleDarkMode()" class="p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-700 transition" title="Toggle Theme">
-                    <i id="themeIcon" data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+            
+            <div class="flex items-center flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto justify-end">
+                <button onclick="toggleDarkMode()" class="hidden sm:flex p-2.5 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition-all">
+                    <i id="themeIcon" data-lucide="sun" class="w-5 h-5"></i>
                 </button>
-                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 rounded-xl border border-emerald-500 transition font-semibold text-sm">
-                    <i data-lucide="cloud-download" class="w-4 h-4"></i> Sync Sheet
+                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-emerald-500/25 transition-all active:scale-95 whitespace-nowrap">
+                    <i data-lucide="cloud-download" class="w-4 h-4"></i> <span class="hidden sm:inline">Sync</span>
                 </button>
-                <button onclick="openImportModal()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl border border-slate-700 transition font-semibold text-sm">
+                <button onclick="openImportModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
                     <i data-lucide="file-up" class="w-4 h-4"></i> Import
                 </button>
-                <button onclick="exportCSV()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2.5 rounded-xl border border-slate-700 transition font-semibold text-sm">
+                <button onclick="exportCSV()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95">
                     <i data-lucide="file-down" class="w-4 h-4"></i> Export
                 </button>
-                <button onclick="confirmReset()" class="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white px-4 py-2.5 rounded-xl border border-rose-500/20 transition font-semibold text-sm">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i> Reset
+                <button onclick="confirmReset()" class="p-2.5 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-xl transition-all active:scale-95">
+                    <i data-lucide="trash-2" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 max-w-[1600px] w-full mx-auto p-6 space-y-6">
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
         
-        <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="p-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg"><i data-lucide="book" class="w-5 h-5"></i></span>
-                    <span id="stat-books-delta" class="text-[10px] font-bold text-emerald-500">+100%</span>
+        <section class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 flex items-center justify-center bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+                    <span id="stat-books-delta" class="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-full">+100%</span>
                 </div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Total Library Size</p>
-                <h3 id="stat-total-books" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total Library</p>
+                    <h3 id="stat-total-books" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
+                </div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="p-2 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg"><i data-lucide="user-check" class="w-5 h-5"></i></span>
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
+                <div class="w-10 h-10 flex items-center justify-center bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-2xl mb-3"><i data-lucide="users" class="w-5 h-5"></i></div>
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Active Authors</p>
+                    <h3 id="stat-total-authors" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
                 </div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Active Authors</p>
-                <h3 id="stat-total-authors" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="p-2 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-lg"><i data-lucide="check-circle-2" class="w-5 h-5"></i></span>
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
+                <div class="w-10 h-10 flex items-center justify-center bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-2xl mb-3"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Read Progress</p>
+                    <h3 id="stat-read-percent" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0%</h3>
                 </div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Read Progress</p>
-                <h3 id="stat-read-percent" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0%</h3>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="p-2 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg"><i data-lucide="calendar" class="w-5 h-5"></i></span>
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
+                <div class="w-10 h-10 flex items-center justify-center bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl mb-3"><i data-lucide="calendar" class="w-5 h-5"></i></div>
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Newest Release</p>
+                    <h3 id="stat-latest-year" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">-</h3>
                 </div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Newest Release</p>
-                <h3 id="stat-latest-year" class="text-3xl font-black text-slate-900 dark:text-white mt-1">2024</h3>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="p-2 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg"><i data-lucide="bookmark" class="w-5 h-5"></i></span>
+            <div class="col-span-2 lg:col-span-1 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between">
+                <div class="w-10 h-10 flex items-center justify-center bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-2xl mb-3"><i data-lucide="bookmark" class="w-5 h-5"></i></div>
+                <div>
+                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">On Wishlist</p>
+                    <h3 id="stat-to-read" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">0</h3>
                 </div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">On Wishlist</p>
-                <h3 id="stat-to-read" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</h3>
             </div>
         </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
-                    <i data-lucide="target" class="w-4 h-4 text-emerald-500"></i> Reading Status Progress
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800">
+                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Reading Status
                 </h4>
-                <div class="chart-container"><canvas id="statusChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="statusChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
-                    <i data-lucide="trending-up" class="w-4 h-4 text-blue-500"></i> Publication Timeline
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800">
+                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> Timeline
                 </h4>
-                <div class="chart-container"><canvas id="timelineChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="timelineChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition lg:col-span-1">
-                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2 uppercase tracking-wider">
-                    <i data-lucide="award" class="w-4 h-4 text-amber-500"></i> Top 5 Authors
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 md:col-span-2 lg:col-span-1">
+                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500"></span> Top Authors
                 </h4>
-                <div class="chart-container"><canvas id="authorChart"></canvas></div>
+                <div class="chart-wrapper"><canvas id="authorChart"></canvas></div>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="flex flex-col xl:flex-row gap-6">
             
-            <aside class="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col h-[750px]">
-                <div class="mb-4">
-                    <h3 class="font-black text-slate-900 dark:text-white flex items-center gap-2 text-base">
-                        <i data-lucide="users" class="w-5 h-5 text-emerald-500"></i> Authors Directory
-                    </h3>
-                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select an author to view their books</p>
-                </div>
-                <div class="relative mb-4">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                    <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Search authors..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white">
-                </div>
-                <div class="flex-1 overflow-y-auto custom-scrollbar pr-1" id="authorListContainer"></div>
-                <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-2">
-                    <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
-                        <i data-lucide="x-circle" class="w-4 h-4"></i> Show All Authors
-                    </button>
+            <aside class="w-full xl:w-80 flex-shrink-0 flex flex-col">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 p-5 flex flex-col h-[400px] xl:h-[800px] sticky top-24">
+                    <div class="mb-5">
+                        <h3 class="font-black text-slate-900 dark:text-white flex items-center gap-2 text-lg">
+                            <i data-lucide="contact" class="w-5 h-5 text-emerald-500"></i> Directory
+                        </h3>
+                    </div>
+                    <div class="relative mb-4">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Filter authors..." class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 dark:text-white transition-all">
+                    </div>
+                    <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1" id="authorListContainer"></div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-2">
+                        <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i> Show All
+                        </button>
+                    </div>
                 </div>
             </aside>
 
-            <section class="lg:col-span-9 bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden flex flex-col min-h-[750px]">
-                <div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 flex flex-col gap-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <section class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800 overflow-hidden min-h-[600px]">
+                <div class="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">Catalog Database</h2>
-                            <p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Total Filtered: <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400">0 / 0</span> books</p>
+                            <h2 class="text-xl font-black text-slate-900 dark:text-white">Catalog Database</h2>
+                            <p class="text-sm font-semibold text-slate-500 dark:text-slate-400 mt-1">Showing <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400 font-bold">0 / 0</span> records</p>
                         </div>
-                        <button onclick="openAddBookModal()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-2xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
-                            <i data-lucide="plus-circle" class="w-5 h-5"></i> Add Book
+                        <button onclick="openAddBookModal()" class="w-full sm:w-auto bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold px-6 py-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Record
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
-                        <div class="relative md:col-span-6">
-                            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-                            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search Title, Author, Year, Ref..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 dark:text-white transition text-sm font-medium">
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 mt-2">
+                        <div class="relative sm:col-span-6">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search title, ref, id..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 dark:text-white transition-all text-sm font-medium">
                         </div>
-                        <div class="md:col-span-3">
-                            <select id="genreFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 text-sm font-medium">
-                                <option value="">All Categories</option>
+                        <div class="sm:col-span-3">
+                            <select id="genreFilter" onchange="handleSearch()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm font-medium transition-all">
+                                <option value="">All Genres</option>
                             </select>
                         </div>
-                        <div class="md:col-span-3">
-                            <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 text-sm font-medium">
+                        <div class="sm:col-span-3">
+                            <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-sm font-medium transition-all">
                                 <option value="">Any Status</option>
                                 <option value="To Read">To Read</option>
                                 <option value="Reading">Reading</option>
@@ -179,142 +199,132 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto min-h-[450px] flex-1">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] bg-slate-50/50 dark:bg-slate-900/40 border-b border-slate-100 dark:border-slate-800">
-                                <th class="py-5 px-6">ID</th>
-                                <th class="py-5 px-6">Book Title (မြန်မာအမည်)</th>
-                                <th class="py-5 px-6">Author (စာရေးဆရာ)</th>
-                                <th class="py-5 px-6">Category</th>
-                                <th class="py-5 px-6">Year</th>
-                                <th class="py-5 px-6">Shelf</th>
-                                <th class="py-5 px-6">Status</th>
-                                <th class="py-5 px-6">Original Ref</th>
-                                <th class="py-5 px-6 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300"></tbody>
-                    </table>
-                    <div id="emptyState" class="hidden py-24 flex flex-col items-center justify-center text-center">
-                        <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-full mb-4 text-slate-300 dark:text-slate-600"><i data-lucide="book-open-x" class="w-12 h-12"></i></div>
-                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200">No books found</h3>
-                        <p class="text-sm text-slate-400 dark:text-slate-500">Try adjusting your filters or import your CSV catalog.</p>
+                <div class="flex-1 p-4 sm:p-6 bg-slate-50/30 dark:bg-slate-950/30">
+                    <div id="catalogList" class="flex flex-col gap-3"></div>
+                    
+                    <div id="emptyState" class="hidden py-20 flex-col items-center justify-center text-center">
+                        <div class="p-5 bg-slate-100 dark:bg-slate-800/80 rounded-3xl mb-5 text-slate-400 dark:text-slate-500">
+                            <i data-lucide="book-x" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1">No matches found</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Adjust your search filters or add a new record to see it here.</p>
                     </div>
                 </div>
 
-                <div class="p-6 bg-slate-50/50 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="text-xs font-bold text-slate-400 dark:text-slate-500" id="paginationInfo">Showing 0 to 0 of 0</div>
-                    <div class="flex items-center gap-2" id="paginationControls"></div>
+                <div class="p-4 sm:p-6 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg" id="paginationInfo">Showing 0 to 0 of 0</div>
+                    <div class="flex items-center gap-1 sm:gap-2" id="paginationControls"></div>
                 </div>
             </section>
         </div>
     </main>
 
-    <div id="bookModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 border dark:border-slate-800">
-            <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
-                <h3 id="modalTitle" class="text-xl font-black text-slate-900 dark:text-white">Add Book Record</h3>
-                <button onclick="closeModal('bookModal')" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+    <div id="bookModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-2xl w-full h-[90vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
+            <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                <h3 id="modalTitle" class="text-xl font-black text-slate-900 dark:text-white">Add Record</h3>
+                <button type="button" onclick="closeModal('bookModal')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
             </div>
-            <form id="bookForm" onsubmit="handleFormSubmit(event)" class="p-8 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                <input type="hidden" id="editIndex">
-                <div class="grid grid-cols-4 gap-4">
-                    <div class="col-span-1">
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Book ID</label>
-                        <input type="text" id="m_id" required placeholder="#001" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6">
+                <form id="bookForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                    <input type="hidden" id="editIndex">
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
+                        <div class="sm:col-span-1">
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">ID</label>
+                            <input type="text" id="m_id" required placeholder="#001" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-bold transition-all">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Title</label>
+                            <input type="text" id="m_title" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                        </div>
                     </div>
-                    <div class="col-span-3">
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Title (မြန်မာအမည်)</label>
-                        <input type="text" id="m_title" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Author</label>
+                            <input type="text" id="m_author" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Category</label>
+                            <input type="text" id="m_genre" required class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                        </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Year</label>
+                            <input type="text" id="m_year" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Shelf</label>
+                            <input type="text" id="m_shelf" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-semibold transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Status</label>
+                            <select id="m_status" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-bold transition-all">
+                                <option value="To Read">To Read</option>
+                                <option value="Reading">Reading</option>
+                                <option value="Finished">Finished</option>
+                            </select>
+                        </div>
+                    </div>
                     <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Author (စာရေးဆရာ)</label>
-                        <input type="text" id="m_author" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Reference URL</label>
+                        <input type="text" id="m_ref" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm font-medium transition-all">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Category</label>
-                        <input type="text" id="m_genre" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">Notes</label>
+                        <textarea id="m_notes" rows="3" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-sm custom-scrollbar transition-all"></textarea>
                     </div>
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Year</label>
-                        <input type="text" id="m_year" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Shelf</label>
-                        <input type="text" id="m_shelf" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Status</label>
-                        <select id="m_status" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold">
-                            <option value="To Read">To Read</option>
-                            <option value="Reading">Reading</option>
-                            <option value="Finished">Finished</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Original Reference / Title</label>
-                    <input type="text" id="m_ref" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-medium text-slate-500">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Notes & Description</label>
-                    <textarea id="m_notes" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm"></textarea>
-                </div>
-                <div class="pt-6 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal('bookModal')" class="px-6 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition">Cancel</button>
-                    <button type="submit" class="px-10 py-3 rounded-2xl bg-emerald-600 text-white font-black shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition">Save Entry</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="px-6 py-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+                <button type="button" onclick="closeModal('bookModal')" class="flex-1 sm:flex-none px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button type="submit" form="bookForm" class="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-md shadow-emerald-500/20 transition-all active:scale-95">Save Record</button>
+            </div>
         </div>
     </div>
 
-    <div id="importModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-300 border dark:border-slate-800">
-            <div class="px-8 py-6 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <h3 class="text-xl font-black text-slate-900 dark:text-white">Import Catalog Data</h3>
-                <button onclick="closeModal('importModal')" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <div id="importModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-2xl w-full h-[85vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
+            <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                <h3 class="text-xl font-black text-slate-900 dark:text-white">Import Data</h3>
+                <button onclick="closeModal('importModal')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
             </div>
-            <div class="p-8 space-y-6">
-                <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-950/50 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all cursor-pointer relative" onclick="triggerFileInput()">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+                <div class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:border-emerald-500 dark:hover:bg-emerald-500/5 transition-all cursor-pointer group" onclick="triggerFileInput()">
                     <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVFileSelect(event)" class="hidden">
-                    <div class="flex flex-col items-center justify-center">
-                        <div class="p-4 bg-white dark:bg-slate-900 rounded-full shadow-md mb-3 text-slate-400 dark:text-slate-500">
+                    <div class="flex flex-col items-center justify-center pointer-events-none">
+                        <div class="p-4 bg-white dark:bg-slate-800 rounded-full shadow-sm mb-4 text-slate-400 group-hover:text-emerald-500 transition-colors">
                             <i data-lucide="upload-cloud" class="w-8 h-8"></i>
                         </div>
-                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300">Choose CSV File</h4>
-                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select a formatted .csv file from your computer</p>
+                        <h4 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-1">Upload CSV File</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Tap to select from your device</p>
                     </div>
                 </div>
                 <div class="relative flex items-center justify-center">
-                    <span class="absolute px-3 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Or Paste Raw CSV</span>
-                    <hr class="w-full border-slate-100 dark:border-slate-800">
+                    <span class="absolute px-3 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Or Paste Raw CSV</span>
+                    <hr class="w-full border-slate-200 dark:border-slate-700">
                 </div>
-                <textarea id="csvInput" rows="5" placeholder="Paste CSV text here... (Headers must include: ID, Title, Author, Genre, Year, Shelf, Ref, Status)" class="w-full p-4 bg-slate-50 dark:bg-slate-950 dark:text-white rounded-2xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-xs"></textarea>
-                <div class="flex justify-end gap-3">
-                    <button onclick="closeModal('importModal')" class="px-6 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800">Close</button>
-                    <button onclick="processCSV()" class="px-10 py-3 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white dark:text-slate-200 font-black hover:bg-slate-800 dark:hover:bg-slate-700 transition">Execute Import</button>
-                </div>
+                <textarea id="csvInput" rows="6" placeholder="Headers: ID, Title, Author, Genre, Year, Shelf, Ref, Status" class="w-full p-4 bg-slate-50 dark:bg-slate-800/50 dark:text-white rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-mono text-xs custom-scrollbar transition-all"></textarea>
+            </div>
+            <div class="px-6 py-5 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+                <button onclick="closeModal('importModal')" class="flex-1 sm:flex-none px-6 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button onclick="processCSV()" class="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black hover:bg-slate-800 dark:hover:bg-slate-100 transition-all active:scale-95 shadow-md">Execute Import</button>
             </div>
         </div>
     </div>
 
-    <div id="confirmModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl max-w-sm w-full overflow-hidden p-8 text-center space-y-6 animate-in fade-in zoom-in-95 duration-200 border dark:border-slate-800">
-            <div class="mx-auto w-16 h-16 bg-rose-50 dark:bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center">
+    <div id="confirmModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2rem] rounded-t-3xl shadow-2xl max-w-sm w-full p-6 sm:p-8 text-center space-y-6 transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-slate-200 dark:border-slate-800">
+            <div class="mx-auto w-16 h-16 bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center">
                 <i data-lucide="alert-triangle" class="w-8 h-8"></i>
             </div>
             <div class="space-y-2">
-                <h3 id="confirmTitle" class="text-xl font-black text-slate-900 dark:text-white">အတည်ပြုပါ</h3>
+                <h3 id="confirmTitle" class="text-xl font-black text-slate-900 dark:text-white">Confirm</h3>
                 <p id="confirmMessage" class="text-sm text-slate-500 dark:text-slate-400 font-medium"></p>
             </div>
-            <div class="flex gap-3">
-                <button onclick="closeModal('confirmModal')" class="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition">မလုပ်တော့ပါ</button>
-                <button id="confirmYesBtn" class="flex-1 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black transition shadow-lg shadow-rose-600/20">သေချာသည်</button>
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeModal('confirmModal')" class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button id="confirmYesBtn" class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black transition-all active:scale-95 shadow-md shadow-rose-600/20">Proceed</button>
             </div>
         </div>
     </div>
@@ -323,7 +333,7 @@
         let books = [];
         let filteredBooks = [];
         let currentPage = 1;
-        const rowsPerPage = 12;
+        const rowsPerPage = 10;
         let mainCharts = {};
         let activeAuthorFilter = "";
 
@@ -349,14 +359,14 @@
         async function syncFromGoogleSheet(isAuto = false) {
             const btn = document.getElementById('syncBtn');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Syncing...';
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> <span class="hidden sm:inline">Syncing...</span>';
             lucide.createIcons();
             
             try {
                 const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRCuRwEIYOPkPte2eE8hGNHHw3mP43Skfa3nORBejmyJfWcNYmc-a-XrUHcUqmZujrc38Mv0U0hkv8m/pub?output=csv';
                 const response = await fetch(sheetUrl);
                 
-                if (!response.ok) throw new Error('Failed to fetch the document');
+                if (!response.ok) throw new Error('Fetch failed');
                 
                 const csvText = await response.text();
                 const lines = csvText.split('\n');
@@ -386,12 +396,11 @@
                 handleSearch();
                 
                 if (!isAuto) {
-                    showCustomConfirm('Sync Successful', 'Successfully fetched and merged data from Google Sheets.', () => {});
+                    showCustomConfirm('Sync Successful', 'Successfully synced records from remote source.', () => {});
                 }
             } catch (error) {
-                console.error('Error fetching sheet:', error);
                 if (!isAuto) {
-                    showCustomConfirm('Sync Failed', 'Could not fetch data from Google Sheets. Ensure the link is set to "Anyone with the link can view".', () => {});
+                    showCustomConfirm('Sync Failed', 'Could not sync records. Check connection and permissions.', () => {});
                 }
             } finally {
                 btn.innerHTML = originalContent;
@@ -414,12 +423,17 @@
         function updateThemeIcon() {
             const isDark = document.documentElement.classList.contains('dark');
             const icon = document.getElementById('themeIcon');
+            const iconMobile = document.getElementById('themeIconMobile');
             if (isDark) {
                 icon.setAttribute('data-lucide', 'sun');
                 icon.className = 'w-5 h-5 text-amber-400';
+                iconMobile.setAttribute('data-lucide', 'sun');
+                iconMobile.className = 'w-5 h-5 text-amber-400';
             } else {
                 icon.setAttribute('data-lucide', 'moon');
-                icon.className = 'w-5 h-5 text-slate-300';
+                icon.className = 'w-5 h-5 text-slate-500';
+                iconMobile.setAttribute('data-lucide', 'moon');
+                iconMobile.className = 'w-5 h-5 text-slate-500';
             }
             lucide.createIcons();
         }
@@ -427,7 +441,7 @@
         function initFilters() {
             const genres = [...new Set(books.map(b => b.genre).filter(Boolean))].sort();
             const gFilter = document.getElementById('genreFilter');
-            gFilter.innerHTML = '<option value="">All Categories</option>' + 
+            gFilter.innerHTML = '<option value="">All Genres</option>' + 
                 genres.map(g => `<option value="${g}">${g}</option>`).join('');
             renderAuthorDirectory();
         }
@@ -445,21 +459,21 @@
             container.innerHTML = "";
 
             if (sortedAuthors.length === 0) {
-                container.innerHTML = `<div class="text-xs text-slate-400 text-center py-4">No authors found</div>`;
+                container.innerHTML = `<div class="text-sm font-medium text-slate-400 text-center py-6">No authors available</div>`;
                 return;
             }
 
             sortedAuthors.forEach(([author, count]) => {
                 const activeClass = activeAuthorFilter === author ? 
-                    "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-100 dark:border-emerald-900/50" : 
-                    "hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-transparent";
+                    "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold border border-emerald-200 dark:border-emerald-800/50" : 
+                    "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-100 dark:border-slate-800 font-medium";
 
                 const row = document.createElement('button');
-                row.className = `w-full text-left px-3 py-2 rounded-xl text-xs flex justify-between items-center transition ${activeClass} mb-1`;
+                row.className = `w-full text-left px-4 py-3 rounded-xl text-sm flex justify-between items-center transition-all ${activeClass}`;
                 row.onclick = () => filterByAuthor(author);
                 row.innerHTML = `
-                    <span class="truncate pr-2">${author}</span>
-                    <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-md font-bold text-[10px] min-w-[20px] text-center">${count}</span>
+                    <span class="truncate pr-3">${author}</span>
+                    <span class="px-2.5 py-1 ${activeAuthorFilter === author ? 'bg-emerald-100 dark:bg-emerald-800/50 text-emerald-700 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'} rounded-lg font-bold text-[10px] min-w-[24px] text-center">${count}</span>
                 `;
                 container.appendChild(row);
             });
@@ -531,37 +545,51 @@
             const start = (currentPage - 1) * rowsPerPage;
             const end = start + rowsPerPage;
             const paginatedItems = filteredBooks.slice(start, end);
-            const tbody = document.getElementById('tableBody');
+            const container = document.getElementById('catalogList');
             
-            tbody.innerHTML = '';
+            container.innerHTML = '';
             
             if (paginatedItems.length === 0) {
                 document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('flex');
             } else {
                 document.getElementById('emptyState').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('flex');
+                
                 paginatedItems.forEach(b => {
-                    const statusClass = b.status === 'Finished' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 
-                                      b.status === 'Reading' ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+                    const statusBg = b.status === 'Finished' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 
+                                     b.status === 'Reading' ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400' : 
+                                     'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
                     
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800 last:border-0";
-                    tr.innerHTML = `
-                        <td class="py-5 px-6 font-mono text-[11px] font-bold text-slate-400 dark:text-slate-500">${b.id}</td>
-                        <td class="py-5 px-6 font-bold text-slate-900 dark:text-white">${b.title}</td>
-                        <td class="py-5 px-6 text-sm font-medium text-slate-600 dark:text-slate-300">${b.author}</td>
-                        <td class="py-5 px-6"><span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">${b.genre}</span></td>
-                        <td class="py-5 px-6 font-mono text-xs text-slate-400 dark:text-slate-500">${b.year || '-'}</td>
-                        <td class="py-5 px-6 text-xs font-bold text-emerald-600 dark:text-emerald-400">${b.shelf}</td>
-                        <td class="py-5 px-6"><span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${statusClass}">${b.status}</span></td>
-                        <td class="py-5 px-6 italic text-xs text-slate-400 dark:text-slate-500 max-w-[150px] truncate">${b.ref || '-'}</td>
-                        <td class="py-5 px-6 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                <button onclick="openEditModal('${b.id}')" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-800 shadow-sm transition" title="Edit Book"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                                <button onclick="deleteBook('${b.id}')" class="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 rounded-xl hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-800 shadow-sm transition" title="Delete Book"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    const card = document.createElement('div');
+                    card.className = "flex flex-col lg:flex-row lg:items-center justify-between p-4 sm:p-5 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all gap-4";
+                    card.innerHTML = `
+                        <div class="flex-1 flex flex-col gap-2.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-black text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">${b.id}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${statusBg}">${b.status}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">${b.genre}</span>
                             </div>
-                        </td>
+                            <div>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight mb-1">${b.title}</h3>
+                                <p class="text-sm font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5"><i data-lucide="pen-tool" class="w-3.5 h-3.5"></i>${b.author}</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap lg:flex-col justify-start lg:justify-center gap-x-5 gap-y-2 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 min-w-[140px]">
+                            <div class="flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> ${b.year || 'N/A'}</div>
+                            <div class="flex items-center gap-2"><i data-lucide="library" class="w-4 h-4 text-slate-400"></i> ${b.shelf || 'N/A'}</div>
+                            <div class="flex items-center gap-2 truncate max-w-[200px]"><i data-lucide="link" class="w-4 h-4 text-slate-400"></i> ${b.ref || 'N/A'}</div>
+                        </div>
+                        <div class="flex items-center gap-2 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800 mt-2 lg:mt-0">
+                            <button onclick="openEditModal('${b.id}')" class="flex-1 lg:flex-none flex items-center justify-center gap-2 p-3 sm:px-4 sm:py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-xl transition-all font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:border-emerald-200 dark:hover:border-emerald-800 active:scale-95">
+                                <i data-lucide="edit-2" class="w-4 h-4"></i><span class="lg:hidden">Edit</span>
+                            </button>
+                            <button onclick="deleteBook('${b.id}')" class="flex-1 lg:flex-none flex items-center justify-center gap-2 p-3 sm:px-4 sm:py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 rounded-xl transition-all font-semibold text-sm border border-slate-200 dark:border-slate-700 hover:border-rose-200 dark:hover:border-rose-800 active:scale-95">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i><span class="lg:hidden">Delete</span>
+                            </button>
+                        </div>
                     `;
-                    tbody.appendChild(tr);
+                    container.appendChild(card);
                 });
                 lucide.createIcons();
             }
@@ -578,19 +606,19 @@
 
             if (totalPages <= 1) return;
 
-            const btnClass = "w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition ";
+            const btnClass = "w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl text-sm font-bold transition-all active:scale-95 ";
             
             for(let i=1; i<=totalPages; i++) {
                 if(i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
                     const btn = document.createElement('button');
-                    btn.className = btnClass + (i === currentPage ? "bg-emerald-600 text-white shadow-lg" : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-emerald-500 dark:hover:border-emerald-400");
+                    btn.className = btnClass + (i === currentPage ? "bg-emerald-600 text-white shadow-md shadow-emerald-500/20" : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-400 dark:hover:border-emerald-600");
                     btn.textContent = i;
                     btn.onclick = () => { currentPage = i; renderTable(); };
                     container.appendChild(btn);
                 } else if (i === currentPage - 2 || i === currentPage + 2) {
                     const span = document.createElement('span');
                     span.textContent = '...';
-                    span.className = "text-slate-300 dark:text-slate-600 px-1";
+                    span.className = "text-slate-400 dark:text-slate-600 px-1 font-bold";
                     container.appendChild(span);
                 }
             }
@@ -614,7 +642,7 @@
 
         function updateCharts() {
             const isDark = document.documentElement.classList.contains('dark');
-            const gridColor = isDark ? '#334155' : '#f1f5f9';
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
             const labelColor = isDark ? '#94a3b8' : '#64748b';
 
             const statusData = {
@@ -640,21 +668,18 @@
                     labels: Object.keys(statusData),
                     datasets: [{
                         data: Object.values(statusData),
-                        backgroundColor: [isDark ? '#1e293b' : '#f1f5f9', '#fbbf24', '#10b981'],
+                        backgroundColor: [isDark ? '#334155' : '#e2e8f0', '#f59e0b', '#10b981'],
                         borderWidth: 0,
-                        hoverOffset: 15
+                        hoverOffset: 10
                     }]
                 },
                 options: { 
+                    maintainAspectRatio: false,
                     cutout: '75%', 
                     plugins: { 
                         legend: { 
                             position: 'bottom', 
-                            labels: { 
-                                boxWidth: 10, 
-                                font: { size: 10, weight: 'bold' },
-                                color: labelColor
-                            } 
+                            labels: { boxWidth: 10, font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor, padding: 20 } 
                         } 
                     } 
                 }
@@ -667,22 +692,20 @@
                     labels: topAuthors.map(a => a[0]),
                     datasets: [{
                         data: topAuthors.map(a => a[1]),
-                        backgroundColor: '#fbbf24',
-                        borderRadius: 12,
-                        barThickness: 20
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 8,
+                        barThickness: 24
                     }]
                 },
                 options: { 
+                    maintainAspectRatio: false,
                     indexAxis: 'y',
                     plugins: { legend: { display: false } },
                     scales: { 
                         x: { display: false }, 
                         y: { 
                             grid: { display: false }, 
-                            ticks: { 
-                                font: { size: 10, weight: 'bold' },
-                                color: labelColor
-                            } 
+                            ticks: { font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor } 
                         } 
                     }
                 }
@@ -696,23 +719,27 @@
                     datasets: [{
                         data: timelineData.map(t => t[1]),
                         borderColor: '#3b82f6',
-                        backgroundColor: isDark ? 'rgba(59, 130, 246, 0.05)' : 'rgba(59, 130, 246, 0.1)',
+                        backgroundColor: isDark ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.15)',
                         fill: true,
                         tension: 0.4,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#3b82f6'
+                        pointRadius: 3,
+                        pointBackgroundColor: '#3b82f6',
+                        borderWidth: 3
                     }]
                 },
                 options: { 
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
                         y: { 
-                            grid: { color: gridColor, borderDash: [5, 5] }, 
-                            ticks: { stepSize: 1, font: { size: 10 }, color: labelColor } 
+                            grid: { color: gridColor, borderDash: [4, 4] }, 
+                            ticks: { stepSize: 1, font: { size: 11, family: 'Plus Jakarta Sans' }, color: labelColor },
+                            border: { display: false }
                         },
                         x: { 
                             grid: { display: false }, 
-                            ticks: { font: { size: 10, weight: 'bold' }, color: labelColor } 
+                            ticks: { font: { size: 11, family: 'Plus Jakarta Sans', weight: '600' }, color: labelColor },
+                            border: { display: false }
                         }
                     }
                 }
@@ -720,7 +747,7 @@
         }
 
         function openAddBookModal() {
-            document.getElementById('modalTitle').textContent = 'New Catalog Entry';
+            document.getElementById('modalTitle').textContent = 'New Record';
             document.getElementById('bookForm').reset();
             document.getElementById('editIndex').value = '';
             document.getElementById('m_status').value = 'To Read';
@@ -730,7 +757,7 @@
         function openEditModal(id) {
             const idx = books.findIndex(b => b.id === id);
             const b = books[idx];
-            document.getElementById('modalTitle').textContent = 'Edit Catalog Entry';
+            document.getElementById('modalTitle').textContent = 'Edit Record';
             document.getElementById('editIndex').value = idx;
             document.getElementById('m_id').value = b.id;
             document.getElementById('m_title').value = b.title;
@@ -785,8 +812,8 @@
         function deleteBook(id) {
             const b = books.find(book => book.id === id);
             showCustomConfirm(
-                'စာအုပ်ကို ဖျက်ရန် အတည်ပြုပါ',
-                `"${b.title}" စာအုပ်မှတ်တမ်းကို ဖျက်ရန် သေချာပါသလား? ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။`,
+                'Delete Record',
+                `Are you sure you want to delete "${b.title}"? This action cannot be undone.`,
                 () => {
                     books = books.filter(book => book.id !== id);
                     sessionStorage.setItem('library_db_v2', JSON.stringify(books));
@@ -798,8 +825,8 @@
 
         function confirmReset() {
             showCustomConfirm(
-                'ဒေတာဘေ့စ်တစ်ခုလုံးကို ဖျက်ရန်',
-                'သတိပေးချက်- သင်၏စာအုပ်မှတ်တမ်းများအားလုံး အပြီးတိုင် ပျက်သွားပါမည်။ ဆက်လက်လုပ်ဆောင်မှာ သေချာပါသလား?',
+                'Reset Database',
+                'Warning: All library records will be permanently deleted. Are you sure you want to continue?',
                 () => {
                     books = [];
                     sessionStorage.removeItem('library_db_v2');
@@ -811,11 +838,23 @@
 
         function openModal(id) { 
             const el = document.getElementById(id);
-            el.style.display = 'flex'; 
+            el.classList.remove('hidden');
+            el.classList.add('flex');
+            setTimeout(() => {
+                el.classList.remove('opacity-0');
+                const inner = el.querySelector('.transform');
+                inner.classList.remove('translate-y-full');
+            }, 10);
         }
         function closeModal(id) { 
             const el = document.getElementById(id);
-            el.style.display = 'none'; 
+            el.classList.add('opacity-0');
+            const inner = el.querySelector('.transform');
+            inner.classList.add('translate-y-full');
+            setTimeout(() => {
+                el.classList.remove('flex');
+                el.classList.add('hidden');
+            }, 300);
         }
 
         function openImportModal() {
