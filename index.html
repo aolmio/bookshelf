@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -25,18 +25,18 @@
                             900: '#0f172a',
                             950: '#020617',
                         },
-                        cream: {
-                            100: '#fdfbf7',
-                            200: '#f7f4eb',
-                            300: '#eddcb9',
-                            800: '#422a1d'
+                        amber: {
+                            50: '#fefaf0',
+                            100: '#fdf4dd',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
                         }
                     },
                     boxShadow: {
-                        'neo': '0 8px 0px 0px rgba(0, 0, 0, 0.1)',
-                        'neo-sm': '0 4px 0px 0px rgba(0, 0, 0, 0.1)',
-                        'neo-emerald': '0 6px 0px 0px #047857',
-                        'neo-rose': '0 6px 0px 0px #b91c1c',
+                        'fun-sm': '0 4px 0px 0px rgba(15, 23, 42, 0.15)',
+                        'fun': '0 8px 0px 0px rgba(15, 23, 42, 0.15)',
+                        'fun-emerald': '0 6px 0px 0px #047857',
+                        'fun-rose': '0 6px 0px 0px #b91c1c',
                     }
                 }
             }
@@ -54,40 +54,41 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
         .wood-shelf {
-            background: linear-gradient(to bottom, #d7a15c 0%, #c58b43 30%, #a26b27 100%);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            background: linear-gradient(to bottom, #e1a65d 0%, #ca8a3e 30%, #a06520 100%);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.35);
         }
         .dark .wood-shelf {
-            background: linear-gradient(to bottom, #603813 0%, #4a280a 30%, #2f1400 100%);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            background: linear-gradient(to bottom, #5c3510 0%, #462507 30%, #291100 100%);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
         }
-        .spine-gradient-1 { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); }
-        .spine-gradient-2 { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); }
-        .spine-gradient-3 { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
-        .spine-gradient-4 { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
-        .spine-gradient-5 { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
-        .spine-gradient-6 { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
-        .spine-gradient-7 { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%); }
+        .spine-gradient-1 { background: linear-gradient(135deg, #ff5e7e 0%, #dd224c 100%); }
+        .spine-gradient-2 { background: linear-gradient(135deg, #1cc4ff 0%, #0369a1 100%); }
+        .spine-gradient-3 { background: linear-gradient(135deg, #1ae89a 0%, #047857 100%); }
+        .spine-gradient-4 { background: linear-gradient(135deg, #ffc02b 0%, #b45309 100%); }
+        .spine-gradient-5 { background: linear-gradient(135deg, #ad82ff 0%, #6d28d9 100%); }
+        .spine-gradient-6 { background: linear-gradient(135deg, #ff7bf2 0%, #be185d 100%); }
+        .spine-gradient-7 { background: linear-gradient(135deg, #2ae7d8 0%, #0f766e 100%); }
         .bounce-hover:hover {
             transform: translateY(-4px);
         }
         input[type="text"], select, textarea { appearance: none; }
     </style>
 </head>
-<body class="h-full flex flex-col bg-amber-[50]/30 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
+<body class="h-full flex flex-col bg-amber-[50]/20 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
-    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/95 backdrop-blur-md border-b-4 border-slate-900 dark:border-slate-800 shadow-neo-sm transition-all duration-300">
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b-4 border-slate-900 dark:border-slate-800 shadow-fun-sm transition-all duration-300">
         <div class="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4">
             
             <div class="flex items-center justify-between w-full md:w-auto">
                 <div class="flex items-center gap-3">
-                    <div class="p-2 bg-yellow-400 dark:bg-yellow-500 rounded-2xl border-4 border-slate-900 shadow-neo-sm animate-bounce">
-                        <i data-lucide="book-heart" class="w-8 h-8 text-slate-900"></i>
+                    <div class="p-2.5 bg-yellow-400 dark:bg-yellow-500 rounded-2xl border-4 border-slate-900 shadow-fun-sm animate-pulse">
+                        <i data-lucide="home" class="w-7 h-7 text-slate-900"></i>
                     </div>
                     <div>
                         <h1 class="text-2xl sm:text-3xl font-fun font-black tracking-tight text-slate-900 dark:text-white leading-none">
-                            Household Library </span>
+                            Household <span class="text-amber-500 dark:text-amber-400">Library</span>
                         </h1>
+                        <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wide mt-1">Our shared dynamic reading space!</p>
                     </div>
                 </div>
                 
@@ -96,24 +97,24 @@
                 </button>
             </div>
             
-            <div class="flex items-center flex-wrap sm:flex-nowrap gap-2.5 w-full md:w-auto justify-end">
-                <button onclick="toggleDarkMode()" class="hidden md:flex p-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl border-2 border-slate-900 dark:border-slate-700 transition-all shadow-neo-sm">
+            <div class="flex items-center flex-wrap sm:flex-nowrap gap-2 w-full md:w-auto justify-end">
+                <button onclick="toggleDarkMode()" class="hidden md:flex p-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl border-2 border-slate-900 dark:border-slate-700 transition-all shadow-fun-sm">
                     <i id="themeIcon" data-lucide="sun" class="w-5 h-5"></i>
                 </button>
                 
-                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-400 hover:bg-emerald-500 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm whitespace-nowrap">
+                <button id="syncBtn" onclick="syncFromGoogleSheet()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-400 hover:bg-emerald-500 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all text-sm whitespace-nowrap">
                     <i data-lucide="cloud-download" class="w-5 h-5"></i> <span>Sync Sheet</span>
                 </button>
                 
-                <button onclick="openImportModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-sky-300 hover:bg-sky-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm">
+                <button onclick="openImportModal()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-sky-300 hover:bg-sky-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all text-sm">
                     <i data-lucide="file-up" class="w-5 h-5"></i> <span>Import</span>
                 </button>
                 
-                <button onclick="exportCSV()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-violet-300 hover:bg-violet-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-sm">
+                <button onclick="exportCSV()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-violet-300 hover:bg-violet-400 text-slate-950 px-5 py-3 rounded-2xl font-fun font-black border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all text-sm">
                     <i data-lucide="file-down" class="w-5 h-5"></i> <span>Export</span>
                 </button>
                 
-                <button onclick="confirmReset()" class="p-3 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-2xl border-2 border-slate-900 shadow-neo-sm transition-all active:scale-95">
+                <button onclick="confirmReset()" class="p-3 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-2xl border-2 border-slate-900 shadow-fun-sm transition-all active:scale-95" title="Reset Library">
                     <i data-lucide="trash-2" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -124,67 +125,67 @@
         
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 flex items-center justify-between transition-all duration-300">
                 <div class="space-y-2">
-                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Total Library</p>
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Household Books</p>
                     <h3 id="stat-total-books" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0</h3>
                     <p class="text-[11px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block">Living Records</p>
                 </div>
-                <div class="w-16 h-16 flex items-center justify-center bg-emerald-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                <div class="w-16 h-16 flex items-center justify-center bg-emerald-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-fun-sm">
                     <i data-lucide="book-open" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 flex items-center justify-between transition-all duration-300">
                 <div class="space-y-2">
                     <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Creative Authors</p>
                     <h3 id="stat-total-authors" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0</h3>
-                    <p class="text-[11px] font-bold text-blue-500 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-full inline-block">Active minds</p>
+                    <p class="text-[11px] font-bold text-blue-500 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded-full inline-block">Inspiring Minds</p>
                 </div>
-                <div class="w-16 h-16 flex items-center justify-center bg-blue-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                <div class="w-16 h-16 flex items-center justify-center bg-blue-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-fun-sm">
                     <i data-lucide="users" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 flex items-center justify-between transition-all duration-300">
                 <div class="space-y-2">
                     <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Read Progress</p>
                     <h3 id="stat-read-percent" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">0%</h3>
-                    <p class="text-[11px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full inline-block">Completed</p>
+                    <p class="text-[11px] font-bold text-indigo-500 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded-full inline-block">Finished Ratio</p>
                 </div>
-                <div class="w-16 h-16 flex items-center justify-center bg-indigo-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                <div class="w-16 h-16 flex items-center justify-center bg-indigo-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-fun-sm">
                     <i data-lucide="award" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 flex items-center justify-between transition-all duration-300">
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 flex items-center justify-between transition-all duration-300">
                 <div class="space-y-2">
-                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Newest Release</p>
+                    <p class="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest font-fun">Latest Publication</p>
                     <h3 id="stat-latest-year" class="text-4xl sm:text-5xl font-fun font-black text-slate-900 dark:text-white leading-none">-</h3>
-                    <p class="text-[11px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full inline-block">Freshest publication</p>
+                    <p class="text-[11px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full inline-block">Freshest Year</p>
                 </div>
-                <div class="w-16 h-16 flex items-center justify-center bg-amber-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-neo-sm">
+                <div class="w-16 h-16 flex items-center justify-center bg-amber-300 rounded-[1.5rem] border-2 border-slate-900 dark:border-slate-700 shadow-fun-sm">
                     <i data-lucide="sparkles" class="w-8 h-8 text-slate-950"></i>
                 </div>
             </div>
         </section>
 
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850">
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800">
                 <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-slate-900"></span> Reading Status
+                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-slate-900"></span> Status Breakdown
                 </h4>
                 <div class="chart-wrapper"><canvas id="statusChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850">
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800">
                 <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-sky-400 border-2 border-slate-900"></span> Publication Timeline
+                    <span class="w-3.5 h-3.5 rounded-full bg-sky-400 border-2 border-slate-900"></span> Publication Timeline (All Years)
                 </h4>
                 <div class="chart-wrapper"><canvas id="timelineChart"></canvas></div>
             </div>
-            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 md:col-span-2 lg:col-span-1">
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 md:col-span-2 lg:col-span-1">
                 <h4 class="text-base font-fun font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 border-2 border-slate-900"></span> Top Authors
+                    <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 border-2 border-slate-900"></span> Popular Authors
                 </h4>
                 <div class="chart-wrapper"><canvas id="authorChart"></canvas></div>
             </div>
@@ -193,42 +194,43 @@
         <div class="flex flex-col xl:flex-row gap-6">
             
             <aside class="w-full xl:w-80 flex-shrink-0 flex flex-col">
-                <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 p-5 flex flex-col h-[400px] xl:h-[750px] sticky top-24">
-                    <div class="mb-4">
+                <div class="bg-white dark:bg-slate-900 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 p-5 flex flex-col h-[280px] xl:h-[750px] xl:sticky xl:top-24">
+                    <div class="mb-3 xl:mb-4">
                         <h3 class="font-fun font-black text-slate-900 dark:text-white flex items-center gap-2 text-xl">
-                            <i data-lucide="notebook-tabs" class="w-6 h-6 text-emerald-500"></i> Author Finder
+                            <i data-lucide="notebook-tabs" class="w-6 h-6 text-emerald-500"></i> Author Filter
                         </h3>
-                        <p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Tap an author to filter their work instantly</p>
+                        <p class="text-xs font-semibold text-slate-400 dark:text-slate-500">Select an author to reveal their books instantly</p>
                     </div>
-                    <div class="relative mb-4">
+                    
+                    <div class="relative mb-3 xl:mb-4">
                         <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                        <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Type author's name..." class="w-full pl-9 pr-3 py-3 text-sm rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all font-medium">
+                        <input type="text" id="authorSearchInput" oninput="filterAuthorList()" placeholder="Type author's name..." class="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all font-medium">
                     </div>
                     
-                    <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2" id="authorListContainer"></div>
+                    <div class="flex-1 overflow-x-auto xl:overflow-x-hidden xl:overflow-y-auto custom-scrollbar flex xl:flex-col gap-2 pb-2 pr-0 xl:pr-2" id="authorListContainer"></div>
                     
-                    <div class="pt-4 border-t-2 border-slate-100 dark:border-slate-800 mt-2">
-                        <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-3 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl text-xs font-black font-fun border-2 border-slate-900 transition-all flex items-center justify-center gap-2">
+                    <div class="pt-3 border-t-2 border-slate-100 dark:border-slate-800 mt-2 hidden xl:block">
+                        <button id="clearAuthorFilterBtn" onclick="clearAuthorFilter()" class="hidden w-full py-2.5 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl text-xs font-black font-fun border-2 border-slate-900 transition-all flex items-center justify-center gap-2">
                             <i data-lucide="x" class="w-4 h-4"></i> Show All Authors
                         </button>
                     </div>
                 </div>
             </aside>
 
-            <section class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-[2rem] shadow-neo border-4 border-slate-900 dark:border-slate-850 overflow-hidden min-h-[600px]">
+            <section class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-[2rem] shadow-fun border-4 border-slate-900 dark:border-slate-800 overflow-hidden min-h-[600px]">
                 
-                <div class="p-4 sm:p-6 border-b-4 border-slate-900 dark:border-slate-850 bg-yellow-100/40 dark:bg-slate-900/40 flex flex-col gap-5">
+                <div class="p-4 sm:p-6 border-b-4 border-slate-900 dark:border-slate-800 bg-amber-100/20 dark:bg-slate-900/40 flex flex-col gap-5">
                     
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-2xl font-fun font-black text-slate-900 dark:text-white">The Catalog</h2>
                             <p class="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 mt-1">
-                                We found <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400 font-extrabold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-md">0 / 0</span> records matching your vision!
+                                We found <span id="rowCounter" class="text-emerald-600 dark:text-emerald-400 font-extrabold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-md">0 / 0</span> books matching your selection!
                             </p>
                         </div>
                         
                         <div class="flex items-center gap-2 w-full sm:w-auto">
-                            <button onclick="openAddBookModal()" class="flex-1 sm:flex-none bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-fun font-black px-6 py-3.5 rounded-2xl transition-all shadow-neo-sm border-2 border-slate-900 flex items-center justify-center gap-2 active:scale-95">
+                            <button onclick="openAddBookModal()" class="flex-1 sm:flex-none bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 font-fun font-black px-6 py-3.5 rounded-2xl transition-all shadow-fun-sm border-2 border-slate-900 flex items-center justify-center gap-2 active:scale-95">
                                 <i data-lucide="plus-circle" class="w-5 h-5"></i> Add New Book
                             </button>
                         </div>
@@ -246,7 +248,7 @@
                         </div>
                         <div class="md:col-span-3">
                             <select id="statusFilter" onchange="handleSearch()" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-bold transition-all">
-                                <option value="">Any Reading Status</option>
+                                <option value="">Any Status</option>
                                 <option value="To Read">To Read</option>
                                 <option value="Reading">Reading</option>
                                 <option value="Finished">Finished</option>
@@ -306,8 +308,8 @@
     </main>
 
     <div id="bookModal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-2xl w-full h-[90vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-700">
-            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-850 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
+        <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-2xl w-full h-[90vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-750">
+            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-800 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
                 <h3 id="modalTitle" class="text-2xl font-fun font-black text-slate-900 dark:text-white">Add Book Card</h3>
                 <button type="button" onclick="closeModal('bookModal')" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-colors border-2 border-transparent hover:border-slate-900">
                     <i data-lucide="x" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
@@ -343,7 +345,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Shelf Location</label>
-                            <input type="text" id="m_shelf" placeholder="e.g. A3, Kids Section" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold transition-all">
+                            <input type="text" id="m_shelf" placeholder="e.g. A3, Living Room" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-900 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold transition-all">
                         </div>
                         <div>
                             <label class="block text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2 font-fun">Status</label>
@@ -364,16 +366,16 @@
                     </div>
                 </form>
             </div>
-            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-850 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-800 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
                 <button type="button" onclick="closeModal('bookModal')" class="flex-1 sm:flex-none px-6 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button type="submit" form="bookForm" class="flex-1 sm:flex-none px-8 py-3.5 rounded-xl bg-emerald-400 hover:bg-emerald-500 text-slate-950 font-black font-fun shadow-neo-sm border-2 border-slate-900 active:scale-95 transition-all">Save Book</button>
+                <button type="submit" form="bookForm" class="flex-1 sm:flex-none px-8 py-3.5 rounded-xl bg-emerald-400 hover:bg-emerald-500 text-slate-950 font-black font-fun shadow-fun-sm border-2 border-slate-900 active:scale-95 transition-all">Save Book</button>
             </div>
         </div>
     </div>
 
     <div id="importModal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md z-50 hidden flex-col justify-end sm:items-center sm:justify-center sm:p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-white dark:bg-slate-900 sm:rounded-[2.5rem] rounded-t-[2.5rem] shadow-2xl max-w-2xl w-full h-[85vh] sm:h-auto sm:max-h-[90vh] flex flex-col transform translate-y-full sm:translate-y-0 transition-transform duration-300 border-4 border-slate-900 dark:border-slate-700">
-            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-850 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
+            <div class="px-6 py-5 border-b-4 border-slate-900 dark:border-slate-800 flex items-center justify-between flex-shrink-0 bg-amber-50/50 dark:bg-slate-900/50">
                 <h3 class="text-2xl font-fun font-black text-slate-900 dark:text-white">Import Records</h3>
                 <button onclick="closeModal('importModal')" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-colors border-2 border-transparent hover:border-slate-900">
                     <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
@@ -383,7 +385,7 @@
                 <div class="border-4 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50 dark:bg-slate-800/30 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:border-emerald-500 dark:hover:bg-emerald-500/5 transition-all cursor-pointer group" onclick="triggerFileInput()">
                     <input type="file" id="csvFileInput" accept=".csv" onchange="handleCSVFileSelect(event)" class="hidden">
                     <div class="flex flex-col items-center justify-center pointer-events-none">
-                        <div class="p-4 bg-white dark:bg-slate-850 rounded-full shadow-neo-sm border-2 border-slate-900 mb-4 text-slate-400 group-hover:text-emerald-500 transition-colors">
+                        <div class="p-4 bg-white dark:bg-slate-850 rounded-full shadow-fun-sm border-2 border-slate-900 mb-4 text-slate-400 group-hover:text-emerald-500 transition-colors">
                             <i data-lucide="upload-cloud" class="w-10 h-10"></i>
                         </div>
                         <h4 class="text-lg font-fun font-black text-slate-800 dark:text-slate-200 mb-1">Upload CSV File</h4>
@@ -396,9 +398,9 @@
                 </div>
                 <textarea id="csvInput" rows="6" placeholder="Headers Needed: ID, Title, Author, Genre, Year, Shelf, Notes, Condition, Ref, Status" class="w-full p-4 bg-slate-50 dark:bg-slate-800/50 dark:text-white rounded-xl border-2 border-slate-900 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none font-mono text-xs custom-scrollbar transition-all"></textarea>
             </div>
-            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-850 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
+            <div class="px-6 py-5 border-t-4 border-slate-900 dark:border-slate-800 bg-amber-50/50 dark:bg-slate-900/50 flex justify-end gap-3 flex-shrink-0">
                 <button onclick="closeModal('importModal')" class="flex-1 sm:flex-none px-6 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button onclick="processCSV()" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-fun font-black rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all">Import Database</button>
+                <button onclick="processCSV()" class="flex-1 sm:flex-none px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-fun font-black rounded-xl border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all">Import Database</button>
             </div>
         </div>
     </div>
@@ -414,7 +416,7 @@
             </div>
             <div class="flex gap-3 pt-2">
                 <button onclick="closeModal('confirmModal')" class="flex-1 py-3.5 rounded-xl border-2 border-slate-900 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancel</button>
-                <button id="confirmYesBtn" class="flex-1 py-3.5 rounded-xl bg-rose-400 hover:bg-rose-500 text-slate-950 font-fun font-black border-2 border-slate-900 shadow-neo-rose active:scale-95 transition-all">Proceed</button>
+                <button id="confirmYesBtn" class="flex-1 py-3.5 rounded-xl bg-rose-400 hover:bg-rose-500 text-slate-950 font-fun font-black border-2 border-slate-900 shadow-fun-rose active:scale-95 transition-all">Proceed</button>
             </div>
         </div>
     </div>
@@ -559,21 +561,21 @@
             container.innerHTML = "";
 
             if (sortedAuthors.length === 0) {
-                container.innerHTML = `<div class="text-sm font-black text-slate-400 text-center py-6">No authors inside</div>`;
+                container.innerHTML = `<div class="text-sm font-black text-slate-400 text-center py-6 w-full">No authors inside</div>`;
                 return;
             }
 
             sortedAuthors.forEach(([author, count]) => {
                 const isActive = activeAuthorFilter === author;
                 const activeClass = isActive ? 
-                    "bg-emerald-300 dark:bg-emerald-600 text-slate-950 dark:text-white font-black border-2 border-slate-900 shadow-neo-sm" : 
+                    "bg-emerald-300 dark:bg-emerald-600 text-slate-950 dark:text-white font-black border-2 border-slate-900 shadow-fun-sm" : 
                     "bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-2 border-slate-200 dark:border-slate-800 font-bold";
 
                 const row = document.createElement('button');
-                row.className = `w-full text-left px-3.5 py-3 rounded-xl text-sm flex justify-between items-center transition-all duration-200 ${activeClass}`;
+                row.className = `whitespace-nowrap xl:whitespace-normal text-left px-3.5 py-3 rounded-xl text-sm flex justify-between items-center transition-all duration-200 flex-shrink-0 xl:w-full gap-2 ${activeClass}`;
                 row.onclick = () => filterByAuthor(author);
                 row.innerHTML = `
-                    <span class="truncate pr-2">${author}</span>
+                    <span class="truncate max-w-[120px] xl:max-w-none">${author}</span>
                     <span class="px-2 py-0.5 ${isActive ? 'bg-slate-950 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'} rounded-lg font-black text-xs border border-slate-300 dark:border-slate-700 min-w-[24px] text-center">${count}</span>
                 `;
                 container.appendChild(row);
@@ -594,8 +596,10 @@
                 const name = btn.querySelector('span').textContent.toLowerCase();
                 if (name.includes(query)) {
                     btn.classList.remove('hidden');
+                    btn.classList.add('flex');
                 } else {
                     btn.classList.add('hidden');
+                    btn.classList.remove('flex');
                 }
             });
         }
@@ -700,7 +704,7 @@
                     bookCol.style.width = "100px";
                     bookCol.onclick = () => openEditModal(b.id);
                     bookCol.innerHTML = `
-                        <div class="relative w-16 sm:w-20 h-32 sm:h-40 ${getSpineClass(b.title)} rounded-t-lg border-2 border-slate-900 shadow-neo flex flex-col justify-between p-2 text-white overflow-hidden">
+                        <div class="relative w-16 sm:w-20 h-32 sm:h-40 ${getSpineClass(b.title)} rounded-t-lg border-2 border-slate-900 shadow-fun flex flex-col justify-between p-2 text-white overflow-hidden">
                             <div class="w-full h-1 bg-white/30 rounded-full"></div>
                             <div class="flex-1 flex items-center justify-center">
                                 <h4 class="font-fun font-black text-[10px] sm:text-xs text-center leading-tight tracking-tight rotate-[-90deg] uppercase whitespace-nowrap overflow-hidden text-ellipsis w-24">
@@ -742,7 +746,7 @@
                                  'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
                 
                 const card = document.createElement('div');
-                card.className = "bg-white dark:bg-slate-900 p-5 rounded-[2rem] border-4 border-slate-900 dark:border-slate-800 shadow-neo flex flex-col justify-between gap-4 transition-all hover:-translate-y-1";
+                card.className = "bg-white dark:bg-slate-900 p-5 rounded-[2rem] border-4 border-slate-900 dark:border-slate-800 shadow-fun flex flex-col justify-between gap-4 transition-all hover:-translate-y-1";
                 card.innerHTML = `
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
@@ -763,10 +767,10 @@
                     </div>
 
                     <div class="flex items-center gap-2 pt-2">
-                        <button onclick="openEditModal('${b.id}')" class="flex-1 py-2.5 bg-yellow-300 hover:bg-yellow-400 text-slate-950 font-fun font-black rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all text-xs flex items-center justify-center gap-1.5">
+                        <button onclick="openEditModal('${b.id}')" class="flex-1 py-2.5 bg-yellow-300 hover:bg-yellow-400 text-slate-950 font-fun font-black rounded-xl border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all text-xs flex items-center justify-center gap-1.5">
                             <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
                         </button>
-                        <button onclick="deleteBook('${b.id}')" class="p-2.5 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 shadow-neo-sm active:scale-95 transition-all">
+                        <button onclick="deleteBook('${b.id}')" class="p-2.5 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 shadow-fun-sm active:scale-95 transition-all">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -801,10 +805,10 @@
                     </td>
                     <td class="p-4 text-right">
                         <div class="inline-flex items-center gap-1.5">
-                            <button onclick="openEditModal('${b.id}')" class="p-2 bg-yellow-300 hover:bg-yellow-400 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-neo-sm active:scale-95">
+                            <button onclick="openEditModal('${b.id}')" class="p-2 bg-yellow-300 hover:bg-yellow-400 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-fun-sm active:scale-95">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="deleteBook('${b.id}')" class="p-2 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-neo-sm active:scale-95">
+                            <button onclick="deleteBook('${b.id}')" class="p-2 bg-rose-400 hover:bg-rose-500 text-slate-950 rounded-xl border-2 border-slate-900 transition-all shadow-fun-sm active:scale-95">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -825,7 +829,7 @@
 
             if (totalPages <= 1) return;
 
-            const btnClass = "w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black border-2 border-slate-900 dark:border-slate-700 transition-all active:scale-95 shadow-neo-sm font-fun ";
+            const btnClass = "w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black border-2 border-slate-900 dark:border-slate-700 transition-all active:scale-95 shadow-fun-sm font-fun ";
             
             for(let i=1; i<=totalPages; i++) {
                 if(i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
@@ -875,8 +879,12 @@
             const topAuthors = Object.entries(authorCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
 
             const timelineCounts = {};
-            filteredBooks.forEach(b => { if(b.year) timelineCounts[b.year] = (timelineCounts[b.year] || 0) + 1 });
-            const timelineData = Object.entries(timelineCounts).sort((a,b) => a[0] - b[0]).slice(-10);
+            filteredBooks.forEach(b => { 
+                if(b.year && b.year.toString().trim() !== '') {
+                    timelineCounts[b.year] = (timelineCounts[b.year] || 0) + 1;
+                }
+            });
+            const timelineData = Object.entries(timelineCounts).sort((a,b) => parseInt(a[0]) - parseInt(b[0]));
 
             if (mainCharts.status) mainCharts.status.destroy();
             mainCharts.status = new Chart(document.getElementById('statusChart'), {
@@ -899,7 +907,7 @@
                             position: 'bottom', 
                             labels: { boxWidth: 12, font: { size: 10, family: 'Fredoka', weight: '700' }, color: labelColor, padding: 15 } 
                         } 
-                    } 
+                    }
                 }
             });
 
@@ -960,7 +968,13 @@
                         },
                         x: { 
                             grid: { display: false }, 
-                            ticks: { font: { size: 10, family: 'Fredoka', weight: '700' }, color: labelColor },
+                            ticks: { 
+                                font: { size: 10, family: 'Fredoka', weight: '700' }, 
+                                color: labelColor,
+                                autoSkip: true,
+                                maxRotation: 45,
+                                minRotation: 0
+                            },
                             border: { display: false }
                         }
                     }
@@ -1163,7 +1177,7 @@
             const a = document.createElement('a');
             a.setAttribute('hidden', '');
             a.setAttribute('href', url);
-            a.setAttribute('download', 'library_export.csv');
+            a.setAttribute('download', 'household_library_export.csv');
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
